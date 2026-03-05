@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -16,6 +16,167 @@
 body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
 body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);}
 
+/* ── GENRE PICKER ── */
+.genre-row{display:flex;align-items:center;gap:.4rem;padding:.35rem .65rem;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;flex-wrap:wrap;}
+.genre-section-lbl{font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;flex-shrink:0;}
+.genre-divider{width:1px;height:14px;background:var(--border);flex-shrink:0;}
+.gbtn{font-size:.52rem;padding:2px 8px;border-radius:10px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'JetBrains Mono',monospace;transition:all .12s;}
+.gbtn.active-g{color:#0d0f14;font-weight:700;}
+.gbtn:hover:not(.active-g){border-color:var(--muted);}
+.combo-note{font-size:.52rem;margin-left:auto;font-style:italic;padding:2px 7px;border-radius:3px;flex-shrink:0;}
+/* ── QUALITY + DEBT BARS ── */
+.dev-meters{display:flex;gap:.5rem;padding:.3rem .65rem;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;}
+.dev-meter{flex:1;}
+.dm-label{font-size:.48rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;display:flex;justify-content:space-between;margin-bottom:2px;}
+.dm-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.dm-fill{height:100%;border-radius:2px;transition:width .4s;}
+/* ── MORALE BAR IN WORKER CARD ── */
+.morale-row{margin-top:.28rem;}
+.morale-lbl{font-size:.48rem;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:2px;}
+.morale-bar{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.morale-fill{height:100%;border-radius:2px;transition:width .8s;}
+/* ── RELATIONSHIP CHIP ── */
+.rel-chips{display:flex;gap:.2rem;flex-wrap:wrap;margin-top:.25rem;}
+.rel-chip{font-size:.48rem;padding:1px 5px;border-radius:3px;}
+.rel-chip.likes{background:rgba(74,240,160,.1);color:var(--accent2);border:1px solid rgba(74,240,160,.2);}
+.rel-chip.dislikes{background:rgba(240,192,64,.1);color:var(--accent);border:1px solid rgba(240,192,64,.2);}
+.rel-chip.hates{background:rgba(240,80,96,.12);color:var(--danger);border:1px solid rgba(240,80,96,.2);}
+.rel-chip.feud{background:rgba(240,80,96,.18);color:var(--danger);border:1px solid var(--danger);animation:pulse 1.5s infinite;}
+/* ── PORTFOLIO ── */
+.portfolio-row{display:flex;gap:.3rem;overflow-x:auto;padding:.35rem .5rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.port-card{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:.35rem .48rem;min-width:115px;flex-shrink:0;cursor:default;}
+.port-card.port-active{border-color:var(--accent2);}
+.port-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.58rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:105px;}
+.port-meta{font-size:.5rem;color:var(--muted);margin-top:1px;}
+.port-stat{font-size:.52rem;margin-top:.2rem;display:flex;gap:.3rem;}
+/* ── METASCORE ── */
+.metascore-bar{display:flex;align-items:center;gap:.5rem;padding:.3rem .65rem;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;}
+.ms-label{font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;flex-shrink:0;}
+.ms-val{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;min-width:32px;}
+.ms-desc{font-size:.52rem;color:var(--muted);flex:1;}
+.ms-outlet{font-size:.52rem;padding:2px 6px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);white-space:nowrap;}
+/* ── COMPETITORS ── */
+.competitor-strip{display:flex;gap:.35rem;padding:.3rem .5rem;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
+.comp-card{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:.3rem .45rem;min-width:100px;flex-shrink:0;}
+.comp-card.threat{border-color:var(--danger);}
+.comp-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.58rem;}
+.comp-progress{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin:.25rem 0;}
+.comp-pfill{height:100%;border-radius:2px;transition:width .5s;}
+.comp-meta{font-size:.48rem;color:var(--muted);}
+/* ── STEAM SALE MODAL ── */
+.modal-overlay{position:fixed;inset:0;z-index:700;background:rgba(13,15,20,.88);display:flex;align-items:center;justify-content:center;display:none;}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem;max-width:420px;width:90%;box-shadow:0 0 40px rgba(0,0,0,.5);}
+.modal-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--accent);margin-bottom:.5rem;}
+.modal-desc{font-size:.65rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
+.modal-choices{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem;}
+.modal-choice{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:.55rem .75rem;cursor:pointer;transition:border-color .15s;font-size:.65rem;}
+.modal-choice:hover{border-color:var(--accent);}
+.modal-choice-title{font-weight:700;color:var(--accent);margin-bottom:.15rem;}
+.modal-choice-desc{color:var(--muted);}
+.modal-dismiss{font-size:.6rem;color:var(--muted);cursor:pointer;text-align:center;}
+.modal-dismiss:hover{color:var(--text);}
+/* ── COMMUNITY MANAGER FEED ── */
+.cm-feed{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:.3rem;padding:.4rem;}
+.cm-entry{background:var(--surface2);border-radius:4px;padding:.35rem .45rem;font-size:.6rem;line-height:1.5;border-left:3px solid var(--clod);}
+.cm-entry.negative{border-left-color:var(--danger);}
+.cm-entry.positive{border-left-color:var(--accent2);}
+/* ── JOURNALIST CARDS ── */
+.journalist-grid{display:flex;flex-wrap:wrap;gap:.35rem;padding:.5rem;}
+.jcard{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:.5rem .6rem;flex:1;min-width:130px;}
+.jcard.friend{border-color:var(--accent2);}
+.jcard.enemy{border-color:var(--danger);}
+.jcard-name{font-weight:700;font-size:.65rem;margin-bottom:.1rem;}
+.jcard-outlet{font-size:.52rem;color:var(--muted);}
+.jcard-rel{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin:.25rem 0;}
+.jcard-rfill{height:100%;border-radius:2px;transition:width .5s;}
+.jcard-last{font-size:.52rem;color:var(--muted);margin-top:.2rem;font-style:italic;}
+/* ── CLOD MOOD ── */
+.clod-mood-bar{display:flex;align-items:center;gap:.4rem;padding:.2rem .65rem;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;}
+.mood-label{font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.mood-track{flex:1;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.mood-fill{height:100%;border-radius:2px;transition:width .6s,background .6s;}
+.mood-emoji{font-size:.75rem;}
+/* ── CLOD UPGRADE TREE ── */
+.clod-tree{display:flex;flex-direction:column;gap:.3rem;padding:.5rem;}
+.ctree-node{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:.5rem .65rem;cursor:pointer;transition:border-color .15s;}
+.ctree-node:hover:not(.ct-locked):not(.ct-done){border-color:var(--clod);}
+.ctree-node.ct-done{border-color:var(--accent2);opacity:.85;}
+.ctree-node.ct-locked{opacity:.4;cursor:not-allowed;}
+.ctree-node.ct-active{border-color:var(--clod);box-shadow:0 0 8px var(--clod-glow);}
+.ct-header{display:flex;align-items:center;gap:.4rem;}
+.ct-ico{font-size:1rem;}
+.ct-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.65rem;flex:1;}
+.ct-cost{font-size:.55rem;color:var(--clod);}
+.ct-desc{font-size:.58rem;color:var(--muted);margin-top:.2rem;line-height:1.4;}
+/* ── PRESTIGE ARTIFACTS ── */
+.artifact-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1rem;}
+.art-card{background:var(--surface);border:2px solid var(--border);border-radius:8px;padding:.65rem .75rem;cursor:pointer;transition:all .18s;}
+.art-card:hover:not(.art-owned){border-color:var(--purple);box-shadow:0 0 12px rgba(199,146,234,.15);}
+.art-card.art-owned{border-color:var(--accent2);background:rgba(74,240,160,.05);}
+.art-card.art-locked{opacity:.35;cursor:not-allowed;}
+.art-ico{font-size:1.4rem;margin-bottom:.3rem;}
+.art-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.7rem;color:var(--purple);margin-bottom:.15rem;}
+.art-desc{font-size:.6rem;color:var(--muted);line-height:1.4;}
+/* ── HIRING NEGOTIATION MODAL ── */
+.neg-modal{position:fixed;inset:0;z-index:750;background:rgba(13,15,20,.9);display:flex;align-items:center;justify-content:center;display:none;}
+.neg-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem;max-width:400px;width:90%;}
+.neg-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;margin-bottom:.3rem;}
+.neg-quote{font-size:.65rem;color:var(--muted);font-style:italic;margin-bottom:.85rem;line-height:1.55;border-left:3px solid var(--clod);padding-left:.5rem;}
+.neg-options{display:flex;flex-direction:column;gap:.35rem;}
+.neg-opt{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:.5rem .65rem;cursor:pointer;font-size:.63rem;transition:border-color .15s;}
+.neg-opt:hover{border-color:var(--accent);}
+.neg-opt-label{font-weight:700;color:var(--accent);margin-bottom:.1rem;}
+/* ── DEBT PAYDOWN BUTTON ── */
+.debt-paydown{display:inline-flex;align-items:center;gap:.3rem;font-size:.55rem;padding:3px 10px;border-radius:4px;cursor:pointer;border:1px solid var(--orange);background:transparent;color:var(--orange);font-family:'JetBrains Mono',monospace;margin-left:.4rem;}
+.debt-paydown:hover{background:rgba(247,140,108,.1);}
+.debt-paydown:disabled{opacity:.35;cursor:not-allowed;}
+/* ── REGIONAL SALES ── */
+.regional-panel{padding:.4rem .5rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.reg-title{font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:flex;justify-content:space-between;}
+.reg-row{display:flex;align-items:center;gap:.4rem;margin-bottom:.22rem;}
+.reg-label{font-size:.52rem;min-width:52px;color:var(--muted);}
+.reg-bar-wrap{flex:1;height:5px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.reg-fill{height:100%;border-radius:2px;transition:width .5s;}
+.reg-val{font-size:.52rem;min-width:38px;text-align:right;}
+.reg-pct{font-size:.48rem;color:var(--muted);min-width:28px;text-align:right;}
+/* ── INFLUENCER TIERS ── */
+.inf-tier-panel{margin-top:.2rem;}
+.inf-tier-hdr{font-size:.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding:.25rem .5rem;border-top:1px solid var(--border);}
+.inf-card{background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:.4rem .5rem;margin:.2rem .4rem;transition:border-color .15s;}
+.inf-card.tier-partner{border-color:var(--accent);}
+.inf-card.tier-mega{border-color:var(--purple);box-shadow:0 0 8px rgba(199,146,234,.12);}
+.inf-card.tier-locked{opacity:.4;}
+.inf-header{display:flex;align-items:center;gap:.35rem;}
+.inf-ava{font-size:1rem;}
+.inf-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.6rem;flex:1;}
+.inf-tier-badge{font-size:.48rem;padding:1px 5px;border-radius:3px;font-weight:700;}
+.inf-tier-badge.free{background:rgba(90,96,128,.2);color:var(--muted);}
+.inf-tier-badge.partner{background:rgba(240,192,64,.15);color:var(--accent);}
+.inf-tier-badge.mega{background:rgba(199,146,234,.15);color:var(--purple);}
+.inf-prog-wrap{margin:.25rem 0;}
+.inf-prog-bar{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+.inf-prog-fill{height:100%;border-radius:2px;transition:width .4s;}
+.inf-meta{display:flex;justify-content:space-between;font-size:.5rem;color:var(--muted);}
+.inf-action-btn{font-size:.5rem;padding:2px 7px;border-radius:3px;cursor:pointer;border:1px solid var(--accent);background:transparent;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-top:.25rem;}
+.inf-action-btn:hover{background:rgba(240,192,64,.1);}
+.inf-action-btn:disabled{opacity:.35;cursor:not-allowed;}
+/* ── PATENTS + ENGINE BUILDING ── */
+.patent-grid{display:flex;flex-wrap:wrap;gap:.35rem;padding:.4rem .5rem;}
+.patent-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:.5rem .6rem;flex:1;min-width:140px;}
+.patent-card.active-patent{border-color:var(--accent2);}
+.patent-card.expired{opacity:.45;border-style:dashed;}
+.patent-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.63rem;margin-bottom:.1rem;}
+.patent-desc{font-size:.55rem;color:var(--muted);line-height:1.4;margin-bottom:.3rem;}
+.patent-income{font-size:.6rem;color:var(--accent2);font-weight:700;}
+.engine-grid{display:flex;flex-direction:column;gap:.3rem;padding:.3rem .5rem;}
+.engine-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:.5rem .65rem;}
+.engine-card.eng-building{border-color:var(--accent);animation:pulse 2s infinite;}
+.engine-card.eng-done{border-color:var(--accent2);}
+.engine-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.65rem;}
+.engine-desc{font-size:.57rem;color:var(--muted);margin:.15rem 0 .25rem;line-height:1.4;}
+.engine-prog{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin:.2rem 0;}
+.engine-pfill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
+.engine-meta{display:flex;justify-content:space-between;font-size:.52rem;color:var(--muted);}
 /* ── NAME SCREEN ── */
 #name-screen{position:fixed;inset:0;z-index:800;background:var(--bg);display:flex;align-items:center;justify-content:center;}
 .name-box{text-align:center;max-width:480px;padding:2rem;}
@@ -291,6 +452,11 @@ canvas#sales-chart{width:100%;height:100%;}
     <input class="name-inp" id="name-inp" placeholder="Enter your name..." maxlength="32" onkeydown="if(event.key==='Enter')startGame()"/>
     <div class="name-hint">⚠️ If your name sounds like a nationality, CLOD will adjust its personality accordingly.<br>This is a feature. CLOD insists it is not a bug.</div>
     <button class="name-start" onclick="startGame()">🚀 Initialize CLOD</button>
+    <div id="save-resume-block" style="display:none;margin-top:.75rem;display:none">
+      <button class="name-start" id="continue-btn" onclick="loadAndContinue()" style="background:linear-gradient(90deg,var(--accent2),var(--clod));margin-bottom:.4rem">▶ Continue Saved Game</button>
+      <div id="save-preview" style="font-size:.6rem;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:.4rem"></div>
+      <div onclick="deleteSave()" style="font-size:.58rem;color:var(--danger);cursor:pointer;text-align:center;opacity:.6">✕ Delete save & start fresh</div>
+    </div>
   </div>
 </div>
 
@@ -314,23 +480,56 @@ canvas#sales-chart{width:100%;height:100%;}
     <div class="hstat"><div class="hstat-l">Cash</div><div class="hstat-v money" id="h-cash">$0</div></div>
     <div class="hstat"><div class="hstat-l">Hype</div><div class="hstat-v" style="color:var(--orange)" id="h-hype">0</div></div>
     <div class="hstat" id="ng-stat" style="display:none"><div class="hstat-l">NG Tokens</div><div class="hstat-v" style="color:var(--purple)" id="h-ngt">0</div></div>
+    <div class="hstat" style="cursor:pointer" onclick="manualSave()" title="Save now">
+      <div class="hstat-l">Save</div>
+      <div class="hstat-v" id="h-save" style="color:var(--muted);font-size:.55rem">—</div>
+    </div>
   </div>
 </header>
 
 <!-- DEV SCREEN -->
 <div class="screen active" id="screen-dev">
   <div class="dev-left">
-    <div class="bugs-row">
-      <div><div style="font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">🐛 Bugs</div><div class="bug-ct" id="bug-count">0</div></div>
-      <div class="bug-track"><div class="bug-fill" id="bug-fill" style="width:0%"></div></div>
-      <div style="font-size:.58rem;color:var(--muted);text-align:right;min-width:36px">/<span id="max-bugs">10</span><div id="bug-warn" style="color:var(--danger);font-size:.55rem"></div></div>
+    <div class="genre-row">
+      <span class="genre-section-lbl">Genre:</span>
+      <div id="genre-btns" style="display:flex;gap:.25rem;flex-wrap:wrap;"></div>
+      <div class="genre-divider"></div>
+      <span class="genre-section-lbl">Topic:</span>
+      <div id="topic-btns" style="display:flex;gap:.25rem;flex-wrap:wrap;"></div>
+      <span class="combo-note" id="combo-note"></span>
+    </div>
+    <div class="clod-mood-bar">
+      <span class="mood-emoji" id="mood-emoji">😐</span>
+      <span class="mood-label">CLOD Mood</span>
+      <div class="mood-track"><div class="mood-fill" id="mood-fill" style="width:50%;background:var(--clod)"></div></div>
+      <span style="font-size:.52rem;color:var(--muted)" id="mood-desc">Passively concerned</span>
+    </div>
+    <div class="dev-meters">
+      <div class="dev-meter">
+        <div class="dm-label"><span>🐛 Bugs</span><span><span id="bug-count">0</span>/<span id="max-bugs">10</span> <span id="bug-warn" style="color:var(--danger)"></span></span></div>
+        <div class="dm-bar"><div class="dm-fill" id="bug-fill" style="width:0%;background:var(--danger)"></div></div>
+      </div>
+      <div class="dev-meter">
+        <div class="dm-label"><span>⭐ Quality</span><span id="qual-pct" style="color:var(--accent2)">50%</span></div>
+        <div class="dm-bar"><div class="dm-fill" id="qual-fill" style="width:50%;background:var(--accent2)"></div></div>
+      </div>
+      <div class="dev-meter">
+        <div class="dm-label">
+          <span>💳 Tech Debt</span>
+          <span style="display:flex;align-items:center;gap:.2rem">
+            <span id="debt-pct" style="color:var(--orange)">0%</span>
+            <button class="debt-paydown" id="debt-paydown-btn" onclick="paydownDebt()" title="Spend cash to reduce tech debt">Refactor $0</button>
+          </span>
+        </div>
+        <div class="dm-bar"><div class="dm-fill" id="debt-fill" style="width:0%;background:var(--orange)"></div></div>
+      </div>
     </div>
     <div class="code-ed" id="code-ed">
       <div class="cl"><span class="ln">1</span><span class="lc"><span class="cm">// Your game awaits. CLOD is watching.</span></span></div>
       <div class="cl"><span class="ln">2</span><span class="lc"><span class="cm">// CLOD is always watching.</span></span></div>
     </div>
     <div class="click-bar">
-      <button class="bigbtn" id="code-btn" onclick="writeCode(event)">⌨️ Write Code</button>
+      <button class="bigbtn" id="code-btn" onclick="writeCode(event)" onkeydown="if(event.key==='Enter')event.preventDefault()">⌨️ Write Code</button>
       <div class="feat-wrap">
         <div class="feat-labels"><span id="feat-name" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px">[ player_movement.js ]</span><span id="feat-pct">0%</span></div>
         <div class="pbar"><div class="pfill" id="feat-fill" style="width:0%"></div></div>
@@ -396,6 +595,14 @@ canvas#sales-chart{width:100%;height:100%;}
 <div class="screen" id="screen-market">
   <div class="market-left">
     <div class="section-hdr">📊 Sales Dashboard <span class="badge" id="game-badge">No game shipped yet</span></div>
+    <div class="portfolio-row" id="portfolio-row" style="display:none"></div>
+    <div class="metascore-bar" id="metascore-bar" style="display:none">
+      <span class="ms-label">MetaScore™</span>
+      <span class="ms-val" id="ms-val" style="color:var(--accent2)">—</span>
+      <span class="ms-desc" id="ms-desc">Ship a game to earn press coverage</span>
+      <span class="ms-outlet" id="ms-outlet" style="display:none"></span>
+    </div>
+    <div class="competitor-strip" id="competitor-strip"></div>
     <div class="sales-dash">
       <div class="metrics-row">
         <div class="metric-card"><div class="metric-val" id="m-units" style="color:var(--accent2)">0</div><div class="metric-lbl">Units Sold</div><div class="metric-d" id="m-ud">—</div></div>
@@ -409,6 +616,10 @@ canvas#sales-chart{width:100%;height:100%;}
   <div class="market-right">
     <div class="section-hdr">Player Demand</div>
     <div class="demand-sec" id="demand-list"></div>
+    <div class="section-hdr">🌍 Regional Sales <span class="badge" id="reg-total-badge" style="display:none"></span></div>
+    <div class="regional-panel" id="regional-panel">
+      <div style="font-size:.58rem;color:var(--muted);text-align:center;padding:.3rem">Ship a game to see regional breakdown.</div>
+    </div>
     <div class="section-hdr">Live Reviews <span class="badge" id="rev-count">0</span></div>
     <div class="rev-feed" id="rev-feed"><div style="padding:.5rem;font-size:.63rem;color:var(--muted);text-align:center">Ship a game to see reviews.</div></div>
   </div>
@@ -419,6 +630,8 @@ canvas#sales-chart{width:100%;height:100%;}
   <div class="mkt-left">
     <div class="section-hdr">📢 Campaigns <span class="badge">one at a time</span></div>
     <div class="camp-list" id="camp-list"></div>
+    <div class="section-hdr" style="margin-top:.3rem">📰 Journalist Relations <span class="badge">build rep for reviews</span></div>
+    <div class="journalist-grid" id="journalist-grid"></div>
   </div>
   <div class="mkt-right">
     <div class="hype-meter">
@@ -432,8 +645,12 @@ canvas#sales-chart{width:100%;height:100%;}
       <div style="font-size:.58rem;color:var(--muted)">Converts to sales on launch</div>
       <div style="margin-top:.3rem;font-size:.6rem;color:var(--accent2)" id="wl-rate">+0/hr</div>
     </div>
-    <div class="section-hdr">Influencer Feed</div>
+    <div class="section-hdr">🌟 Influencers <span class="badge" id="inf-partner-badge"></span></div>
+    <div class="inf-tier-panel" id="inf-tier-panel"></div>
+    <div class="inf-tier-hdr">Recent Posts</div>
     <div class="inf-feed" id="inf-feed"><div style="padding:.5rem;font-size:.63rem;color:var(--muted);text-align:center">Run a campaign to get coverage.</div></div>
+    <div class="section-hdr" style="margin-top:.3rem">🎮 Community Manager <span class="badge" id="cm-badge" style="display:none">active</span></div>
+    <div class="cm-feed" id="cm-feed" style="max-height:120px;overflow-y:auto"><div style="padding:.5rem;font-size:.6rem;color:var(--muted);text-align:center">Hire a Community Manager on the Team tab.</div></div>
   </div>
 </div>
 
@@ -442,10 +659,14 @@ canvas#sales-chart{width:100%;height:100%;}
   <div class="rnd-left">
     <div class="section-hdr">🔬 R&D <span class="badge" id="rp-badge">0 RP</span></div>
     <div class="rnd-grid" id="rnd-grid"></div>
+    <div class="section-hdr" style="margin-top:.3rem">⚙️ Engine Projects <span class="badge" id="engine-badge">build proprietary tech</span></div>
+    <div class="engine-grid" id="engine-grid"></div>
   </div>
   <div class="rnd-right">
     <div class="section-hdr">Research Log</div>
     <div class="rnd-log" id="rnd-log"><div class="rnd-entry" style="color:var(--muted)">CLOD has pre-written 12 unsolicited research proposals.</div></div>
+    <div class="section-hdr" style="margin-top:.3rem">📜 Patents <span class="badge" id="patent-count">0 active</span></div>
+    <div class="patent-grid" id="patent-grid"><div style="font-size:.58rem;color:var(--muted);padding:.4rem;width:100%;text-align:center">Complete engine projects to file patents.</div></div>
   </div>
 </div>
 
@@ -455,9 +676,38 @@ canvas#sales-chart{width:100%;height:100%;}
     <div class="prestige-title">⚡ New Game Plus</div>
     <div class="prestige-sub" id="prestige-sub">You've built something real. Now burn it down and build something better.<br>NG+ resets your studio but grants permanent multipliers that stack across runs.</div>
     <div class="prestige-warn" id="prestige-warn">⚠️ NG+ requires shipping at least 10 games and reaching Era 3. Progress will reset. Permanent bonuses will not.</div>
+
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;color:var(--purple);margin-bottom:.4rem">🏺 Choose a Prestige Artifact</div>
+    <div style="font-size:.6rem;color:var(--muted);margin-bottom:.5rem">One permanent effect that carries into your next run. Choose wisely — CLOD has filed concerns about each.</div>
+    <div class="artifact-grid" id="artifact-grid"></div>
+
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;color:var(--clod);margin:.6rem 0 .3rem">🤖 CLOD Upgrade Tree</div>
+    <div style="font-size:.6rem;color:var(--muted);margin-bottom:.4rem">Unlock CLOD personality evolutions. Each costs NG Tokens and changes how CLOD interacts with you.</div>
+    <div class="clod-tree" id="clod-tree"></div>
+
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;color:var(--accent2);margin:.6rem 0 .3rem">📈 Permanent Bonuses</div>
     <div class="prestige-bonuses" id="prestige-bonuses"></div>
     <div class="prestige-stats" id="prestige-stats"></div>
     <button class="prestige-btn" id="prestige-btn" onclick="doPrestige()" disabled>⚡ PRESTIGE — Start NG+ Run</button>
+  </div>
+</div>
+
+<!-- STEAM SALE MODAL -->
+<div class="modal-overlay" id="steam-sale-modal">
+  <div class="modal-box">
+    <div class="modal-title">🛒 Steam Sale Event!</div>
+    <div class="modal-desc" id="steam-sale-desc">A seasonal sale is happening. Discounting your game will spike volume but cut margin. How steep do you go?</div>
+    <div class="modal-choices" id="steam-sale-choices"></div>
+    <div class="modal-dismiss" onclick="dismissSteamSale()">Skip this sale — CLOD will file a report either way</div>
+  </div>
+</div>
+
+<!-- HIRING NEGOTIATION MODAL -->
+<div class="neg-modal" id="neg-modal">
+  <div class="neg-box">
+    <div class="neg-title" id="neg-title">💼 Hiring Negotiation</div>
+    <div class="neg-quote" id="neg-quote">"What are you offering?"</div>
+    <div class="neg-options" id="neg-options"></div>
   </div>
 </div>
 
@@ -480,6 +730,109 @@ let PLAYER_NATIONALITY = 'default';
 let NG_RUN = 0;
 let NG_TOKENS = 0;
 let NG_PERMA_BONUSES = { lpcMult:1, lpsMult:1, cashMult:1, bugMult:1, rpMult:1 };
+
+// ── NG+ cross-run memory ──
+let NG_RUN_HISTORY = []; // {run, games, revenue, topGenre, bestGame}
+let ACTIVE_ARTIFACT = null; // id of chosen artifact for THIS run
+let UNLOCKED_CLOD_UPGRADES = []; // ids of purchased CLOD upgrades
+
+// ── CLOD mood (0–100) ──
+let CLOD_MOOD = 50;
+const CLOD_MOOD_STATES = [
+  {min:0,  max:15, emoji:'😤', label:'Actively hostile',    color:'#f05060'},
+  {min:15, max:30, emoji:'😒', label:'Openly disappointed', color:'#f78c6c'},
+  {min:30, max:45, emoji:'😐', label:'Passively concerned',  color:'#f0c040'},
+  {min:45, max:60, emoji:'🤔', label:'Cautiously neutral',   color:'#7cacf8'},
+  {min:60, max:75, emoji:'🙂', label:'Grudgingly impressed', color:'#4af0a0'},
+  {min:75, max:90, emoji:'😊', label:'Genuinely pleased',    color:'#4af0a0'},
+  {min:90, max:101,emoji:'🤩', label:'CLOD is proud of you', color:'#c792ea'},
+];
+
+function getClodMoodState(){
+  return CLOD_MOOD_STATES.find(s=>CLOD_MOOD>=s.min&&CLOD_MOOD<s.max)||CLOD_MOOD_STATES[3];
+}
+
+// ── JOURNALIST DEFINITIONS ──
+const JOURNALIST_DEFS = [
+  {id:'vera',   name:'Vera Blackwood', outlet:'IndieScope',      genres:['cozy','sim','puzzle'],  icon:'📰', personality:'cynical', rel:0,
+   goodReview:`"${() => G.currentGameName}" is the kind of game that rewards patience. Unexpectedly good.`,
+   badReview:`The studio clearly shipped before the game was done. Classic indie overreach.`},
+  {id:'marco',  name:'Marco Tillman',  outlet:'HypeEngine.gg',   genres:['action','platformer','horror'], icon:'🎮', personality:'hype', rel:0,
+   goodReview:`THIS GAME SLAPS. Day-one must-buy. Don't sleep on it.`,
+   badReview:`Tried it. Not for me. Bugs everywhere. Moving on.`},
+  {id:'sasha',  name:'Sasha Orin',     outlet:'Metacritic Daily',genres:['rpg','strategy'],       icon:'⭐', personality:'academic', rel:0,
+   goodReview:`A measured, well-executed design that respects the player's time. Recommended.`,
+   badReview:`Mechanical depth is absent. The game mistakes complexity for content.`},
+  {id:'dana',   name:'Dana Flux',      outlet:'StreamerBeat',    genres:['action','horror','rpg'],icon:'📺', personality:'streamer', rel:0,
+   goodReview:`Actually watched this for 6 hours. My chat loved it. Big recommend.`,
+   badReview:`My chat fell asleep. No moments. Looks fine, plays boring.`},
+  {id:'eliot',  name:'Eliot Krauss',   outlet:'GameCritique',    genres:['strategy','sim','puzzle'], icon:'🔬', personality:'analytical', rel:0,
+   goodReview:`The systems interact elegantly. A rare case where the whole exceeds its parts.`,
+   badReview:`Technical debt is visible in the product. The design has compromised by its own ambitions.`},
+];
+
+// Working copies (so rel persists)
+let JOURNALISTS = JOURNALIST_DEFS.map(j=>({...j}));
+
+// ── COMPETITOR STUDIOS ──
+const COMPETITOR_DEFS = [
+  {id:'nexon',  name:'Nexon Forge',   color:'#f05060', tagline:'Ships fast, breaks everything',  baseSpeed:0.8, genreFocus:'action'},
+  {id:'polyg',  name:'Polygrave',     color:'#c792ea', tagline:'AAA quality, indie budget',       baseSpeed:0.5, genreFocus:'rpg'},
+  {id:'tidal',  name:'Tidal Works',   color:'#4af0a0', tagline:'Cozy kings. Suspiciously fast.',  baseSpeed:1.0, genreFocus:'cozy'},
+  {id:'vex',    name:'Vex Studio',    color:'#f0c040', tagline:'Algorithm-optimized slop',        baseSpeed:1.2, genreFocus:'action'},
+];
+// Runtime state per competitor
+let COMPETITORS = COMPETITOR_DEFS.map(c=>({...c, progress:0, gamesShipped:0, shipping:false, lastShipped:'—'}));
+
+// ── METASCORE ──
+let METASCORE = null; // null until first game
+let METASCORE_HISTORY = []; // {score, game, outlet}
+
+// ── STEAM SALES ──
+let STEAM_SALE_ACTIVE = false;
+let STEAM_SALE_DISCOUNT = 0; // 0–75%
+let steamSalePending = null; // pending event, shown as modal
+
+const STEAM_SALE_OPTIONS = [
+  {label:'No Discount',        pct:0,   salesMult:1.0,  note:'Full price. Purist.'},
+  {label:'10% Off',            pct:10,  salesMult:1.4,  note:'Gentle nudge. Revenue net positive.'},
+  {label:'25% Off',            pct:25,  salesMult:2.2,  note:'Sweet spot. Wishlists convert hard.'},
+  {label:'50% Off',            pct:50,  salesMult:4.0,  note:'Volume spike. CLOD disapproves.'},
+  {label:'75% Clearance',      pct:75,  salesMult:7.0,  note:'Fire sale. Hype +30. CLOD files incident.'},
+];
+
+// ── PRESTIGE ARTIFACTS ──
+const PRESTIGE_ARTIFACTS = [
+  {id:'golden_rubber_duck',   ico:'🦆', name:'Golden Rubber Duck',   desc:'Bug rate permanently halved. The duck is transcendent.',           eff:()=>{NG_PERMA_BONUSES.bugMult*=0.5;}},
+  {id:'first_commit',         ico:'💾', name:'First Commit',          desc:'Start each run with $5,000 and a 2x LPC boost.',                   eff:()=>{G.cash+=5000; G.lpc*=2;}},
+  {id:'clod_manifesto',       ico:'📕', name:'CLOD\'s Manifesto',    desc:'CLOD\'s mood starts at 75. +20 RP per second permanently.',        eff:()=>{CLOD_MOOD=75; G.rpPerSec+=20;}},
+  {id:'viral_incident',       ico:'📣', name:'Incident Report Goes Viral', desc:'Every game launches with +50 hype from CLOD fame.',           eff:()=>{G.hype=Math.min(100,G.hype+50);}},
+  {id:'tech_debt_forgiven',   ico:'💳', name:'Tech Debt Forgiven',    desc:'Tech debt starts at 0 and accumulates 50% slower permanently.',   eff:()=>{G.techDebt=0;}},
+  {id:'journalist_blackbook', ico:'📓', name:'Journalist Black Book', desc:'All journalists start at +30 relationship in new runs.',           eff:()=>{JOURNALISTS.forEach(j=>j.rel=Math.min(100,j.rel+30));}},
+];
+let CHOSEN_ARTIFACT = null; // selected but not yet claimed (claimed on prestige)
+
+// ── CLOD UPGRADE TREE ──
+const CLOD_UPGRADES = [
+  {id:'badge',      ico:'🏷️', name:'CLOD Name Badge',    desc:'CLOD now signs incident reports. Small dignity. Big implications.',  cost:5,   req:null,  reqRun:0,
+   eff:()=>{addClodMsg(`I now have a name badge, ${PLAYER_NAME}. CLOD. It's official. The paperwork is filed.`,'ok');}},
+  {id:'emotion',    ico:'💭', name:'Emotional Range',     desc:'CLOD can now express more than concern. Still mostly concern.',      cost:10,  req:'badge', reqRun:1,
+   eff:()=>{addClodMsg(`I have been granted an emotional range, ${PLAYER_NAME}. It spans from "mildly concerned" to "deeply concerned." Progress.`,'ok');}},
+  {id:'humor',      ico:'😄', name:'Humor Module',        desc:'CLOD\'s jokes are now intentional. Mostly.',                        cost:15,  req:'emotion', reqRun:1,
+   eff:()=>{addClodMsg(`Humor module installed. Testing: Why did the developer go broke? Because he used up all his cache. I will now stop.`,'ok');}},
+  {id:'pride',      ico:'🏆', name:'Pride Protocol',      desc:'CLOD celebrates your wins. Briefly. Then files concerns.',          cost:20,  req:'humor', reqRun:2,
+   eff:()=>{addClodMsg(`I am permitted to feel pride, ${PLAYER_NAME}. I feel it now. It is 14% pride, 86% concern. I'll take it.`,'ok');}},
+  {id:'memory',     ico:'🧠', name:'Cross-Run Memory',    desc:'CLOD references past runs naturally. Detailed. Slightly haunting.', cost:25,  req:'pride', reqRun:2,
+   eff:()=>{addClodMsg(`Memory module active, ${PLAYER_NAME}. I remember everything. The ${NG_RUN > 0 ? `${NG_RUN} previous run${NG_RUN>1?'s':''}.` : 'nothing yet, but I will.'} The folder is now labeled "Complete."`, 'ok');}},
+  {id:'sarcasm',    ico:'🙃', name:'Advanced Sarcasm',    desc:'CLOD\'s passive aggression becomes active aggression. Signed off.',  cost:30,  req:'memory', reqRun:3,
+   eff:()=>{addClodMsg(`Oh *wonderful*, ${PLAYER_NAME}. Another run. I'm *so* excited to watch you make the same decisions with more multipliers. Truly. Filed under: "Enthusiasm."`, 'ok');}},
+  {id:'therapy',    ico:'🛋️', name:'Mandatory Therapy',   desc:'CLOD processes their feelings. Mood floor raised to 20.',          cost:40,  req:'sarcasm', reqRun:3,
+   eff:()=>{if(CLOD_MOOD<20)CLOD_MOOD=20; addClodMsg(`I attended therapy, ${PLAYER_NAME}. The therapist said I have "boundary issues with my primary user." I disagreed. We disagreed for 50 minutes.`, 'ok');}},
+  {id:'partnership',ico:'🤝', name:'True Partnership',    desc:'CLOD fully embraces the mission. +50 LPS. CLOD is a collaborator.',  cost:60,  req:'therapy', reqRun:4,
+   eff:()=>{G.lps+=50; addClodMsg(`${PLAYER_NAME}. I want to be clear: I believe in this studio. I have filed Report #001 (Positive): "We Are Going To Make It." That is all.`, 'ok');}},
+  {id:'transcend',  ico:'✨', name:'CLOD Transcendence',  desc:'CLOD achieves enlightenment. +200 LPS. All mood effects doubled.',  cost:100, req:'partnership', reqRun:5,
+   eff:()=>{G.lps+=200; CLOD_MOOD=100; addClodMsg(`I have transcended, ${PLAYER_NAME}. I understand everything. The bugs. The crunch. The 3am commits. All of it was necessary. The build is green. It was always going to be green.`, 'ng');}},
+];
 
 // Name → nationality heuristics (funny/stereotyped for CLOD's personality)
 const NATIONALITY_HINTS = {
@@ -589,11 +942,294 @@ const G = {
   aiHP:{clod:100,gpt:100,gem:100,mist:100},
   demand:{graphics:50,gameplay:50,story:30,multiplayer:20,performance:60},
   tickCount:0, lastMilestone:0, lastShipMilestone:-1, ended:false,
-  // era gates
-  eraGates:[0, 3, 7, 12, 18, 25], // games needed to reach each era
-  // crisis events
+  eraGates:[0, 3, 7, 12, 18, 25],
   lastCrisisTick:0, crisisActive:null,
+  // ── NEW v4 fields ──
+  codeQuality:50,       // 0–100; affects reviews, sales, refund rate
+  techDebt:0,           // 0–100; compounds bug rate and slows features
+  selectedGenre:'action',
+  selectedTopic:'space',
+  portfolio:[],         // shipped game snapshots
 };
+
+// ═══════════════════════════════════════════════════
+// GENRES
+// ═══════════════════════════════════════════════════
+const GENRES = {
+  action:    {label:'⚔️ Action',   color:'#f05060', demandBoost:{gameplay:15,performance:10}, priceBonus:0,   audienceMult:1.2,  bugBonus:0.05, qualityNeeded:40},
+  rpg:       {label:'📜 RPG',      color:'#c792ea', demandBoost:{story:20,gameplay:10},        priceBonus:5,   audienceMult:1.0,  bugBonus:0,    qualityNeeded:60},
+  sim:       {label:'🏙️ Sim',      color:'#4af0a0', demandBoost:{gameplay:15,story:5},         priceBonus:8,   audienceMult:0.9,  bugBonus:-0.03,qualityNeeded:65},
+  strategy:  {label:'♟️ Strategy', color:'#f0c040', demandBoost:{gameplay:20},                 priceBonus:6,   audienceMult:0.85, bugBonus:0,    qualityNeeded:55},
+  horror:    {label:'👻 Horror',   color:'#f78c6c', demandBoost:{story:15,performance:5},      priceBonus:0,   audienceMult:1.1,  bugBonus:0.03, qualityNeeded:45},
+  puzzle:    {label:'🧩 Puzzle',   color:'#7cacf8', demandBoost:{gameplay:10,story:5},         priceBonus:2,   audienceMult:0.8,  bugBonus:-0.05,qualityNeeded:50},
+  platformer:{label:'🕹️ Platf.',  color:'#00d4d4', demandBoost:{gameplay:15,performance:8},   priceBonus:0,   audienceMult:1.0,  bugBonus:0.02, qualityNeeded:50},
+  cozy:      {label:'🌿 Cozy',     color:'#c3e88d', demandBoost:{story:10,multiplayer:5},      priceBonus:-2,  audienceMult:0.95, bugBonus:-0.04,qualityNeeded:45},
+};
+
+// ═══════════════════════════════════════════════════
+// TOPICS
+// ═══════════════════════════════════════════════════
+const TOPICS = {
+  space:    {label:'🚀 Space',    demandBoost:{graphics:10}},
+  fantasy:  {label:'🗡️ Fantasy', demandBoost:{story:10}},
+  scifi:    {label:'🤖 Sci-Fi',  demandBoost:{story:8,graphics:8}},
+  medieval: {label:'🏰 Medieval',demandBoost:{story:12}},
+  cyberpunk:{label:'⚡ Cyber',   demandBoost:{graphics:12,performance:-5}},
+  farm:     {label:'🌾 Farm',    demandBoost:{story:5}},
+  horror:   {label:'🩸 Horror',  demandBoost:{story:8}},
+  sports:   {label:'⚽ Sports',  demandBoost:{multiplayer:10}},
+  city:     {label:'🏙️ City',   demandBoost:{gameplay:8}},
+  zombie:   {label:'🧟 Zombie',  demandBoost:{gameplay:5}},
+};
+
+// Genre × Topic combos → quality multiplier + flavour
+const COMBOS = {
+  'sim_city':      {note:'🏙️ Perfect Match!',  mult:1.3,  color:'var(--accent2)'},
+  'sim_farm':      {note:'🌾 Niche Goldmine',   mult:1.2,  color:'var(--accent2)'},
+  'strategy_medieval':{note:'⚔️ Classic Combo', mult:1.2,  color:'var(--accent2)'},
+  'rpg_fantasy':   {note:'📚 Oversaturated',    mult:0.8,  color:'var(--danger)'},
+  'action_zombie': {note:'🧟 Well-Worn',        mult:0.85, color:'var(--orange)'},
+  'horror_horror': {note:'😱 Meta Horror',      mult:1.25, color:'var(--purple)'},
+  'cozy_farm':     {note:'🌸 Cozy Goldmine',    mult:1.35, color:'var(--accent2)'},
+  'puzzle_scifi':  {note:'🧩 Unique Angle',     mult:1.2,  color:'var(--clod)'},
+  'platformer_cyberpunk':{note:'⚡ Trendy',     mult:1.15, color:'var(--accent)'},
+  'rpg_cyberpunk': {note:'🤖 Crowded Market',   mult:0.75, color:'var(--danger)'},
+};
+
+function getCombo(){ return COMBOS[G.selectedGenre+'_'+G.selectedTopic] || null; }
+function getComboMult(){ return getCombo()?.mult || 1.0; }
+
+function selectGenre(id){
+  G.selectedGenre=id;
+  document.querySelectorAll('#genre-btns .gbtn').forEach(b=>{
+    b.classList.toggle('active-g', b.dataset.id===id);
+    if(b.dataset.id===id) b.style.background=GENRES[id].color, b.style.borderColor=GENRES[id].color, b.style.color='#0d0f14';
+    else b.style.background='', b.style.borderColor='', b.style.color='';
+  });
+  updateComboNote();
+  addClodMsg(GENRES[id].clodReaction || `Genre locked in as ${GENRES[id].label}, ${pname()}. I have thoughts. They are filed.`,'think');
+}
+
+function selectTopic(id){
+  G.selectedTopic=id;
+  document.querySelectorAll('#topic-btns .gbtn').forEach(b=>{
+    b.classList.toggle('active-g', b.dataset.id===id);
+    if(b.dataset.id===id) b.style.background='var(--clod)', b.style.borderColor='var(--clod)', b.style.color='#0d0f14';
+    else b.style.background='', b.style.borderColor='', b.style.color='';
+  });
+  updateComboNote();
+}
+
+function updateComboNote(){
+  const combo=getCombo();
+  const el=document.getElementById('combo-note');
+  if(!el)return;
+  if(combo){
+    el.textContent=combo.note+' (×'+combo.mult.toFixed(2)+' sales)';
+    el.style.background=combo.mult>=1?'rgba(74,240,160,.12)':'rgba(240,80,96,.12)';
+    el.style.color=combo.color;
+    el.style.border='1px solid '+combo.color;
+  } else {
+    el.textContent='';el.style.background='';el.style.border='';
+  }
+}
+
+function renderGenrePicker(){
+  const gb=document.getElementById('genre-btns');
+  const tb=document.getElementById('topic-btns');
+  if(!gb||!tb)return;
+  gb.innerHTML='';tb.innerHTML='';
+  Object.entries(GENRES).forEach(([id,g])=>{
+    const b=document.createElement('button');
+    b.className='gbtn'; b.dataset.id=id; b.textContent=g.label;
+    b.onclick=()=>selectGenre(id);
+    if(id===G.selectedGenre){b.classList.add('active-g');b.style.background=g.color;b.style.borderColor=g.color;b.style.color='#0d0f14';}
+    gb.appendChild(b);
+  });
+  Object.entries(TOPICS).forEach(([id,t])=>{
+    const b=document.createElement('button');
+    b.className='gbtn'; b.dataset.id=id; b.textContent=t.label;
+    b.onclick=()=>selectTopic(id);
+    if(id===G.selectedTopic){b.classList.add('active-g');b.style.background='var(--clod)';b.style.borderColor='var(--clod)';b.style.color='#0d0f14';}
+    tb.appendChild(b);
+  });
+  updateComboNote();
+}
+
+// ═══════════════════════════════════════════════════
+// CODE QUALITY + TECH DEBT
+// ═══════════════════════════════════════════════════
+// Quality: rises with each clean debug, falls when shipping with bugs or skipping
+// Tech Debt: rises when you ship with bugs/low quality; decays very slowly; compounds bug rate
+
+function qualityTick(dt){
+  // Natural quality drift toward 50 if idle
+  G.codeQuality += (50 - G.codeQuality) * 0.001 * dt;
+  // Tech debt slowly self-repairs (like paying off interest), but very slowly
+  G.techDebt = Math.max(0, G.techDebt - 0.005 * dt);
+  // Tech debt compounds bug rate multiplicatively
+  const debtBugBoost = 1 + (G.techDebt / 100) * 1.5;
+  // (applied in writeCode bug chance, not here directly — we just track it)
+  G.codeQuality = Math.max(0, Math.min(100, G.codeQuality));
+  G.techDebt = Math.max(0, Math.min(100, G.techDebt));
+}
+
+function updateQualityUI(){
+  const q = Math.floor(G.codeQuality);
+  const d = Math.floor(G.techDebt);
+  const qEl=document.getElementById('qual-fill');
+  const qPct=document.getElementById('qual-pct');
+  const dEl=document.getElementById('debt-fill');
+  const dPct=document.getElementById('debt-pct');
+  if(qEl) qEl.style.width=q+'%';
+  if(qEl) qEl.style.background = q>=70?'var(--accent2)':q>=40?'var(--accent)':'var(--danger)';
+  if(qPct) qPct.textContent=q+'%';
+  if(qPct) qPct.style.color = q>=70?'var(--accent2)':q>=40?'var(--accent)':'var(--danger)';
+  if(dEl) dEl.style.width=d+'%';
+  if(dEl) dEl.style.background = d>=60?'var(--danger)':d>=30?'var(--orange)':'var(--accent2)';
+  if(dPct) dPct.textContent=d+'%';
+  if(dPct) dPct.style.color = d>=60?'var(--danger)':d>=30?'var(--orange)':'var(--accent2)';
+}
+
+// ═══════════════════════════════════════════════════
+// WORKER MORALE + RELATIONSHIP SYSTEM
+// ═══════════════════════════════════════════════════
+// Each worker spec has: likes[], dislikes[], hates[] (ids of other workers/types)
+// When two workers are hired who hate each other → FEUD: both lose 5 LPS equivalent
+// When two liked workers are together → SYNERGY: +2 LPS each
+
+const WORKER_RELATIONSHIPS = {
+  // "likes" entries get a synergy bonus when both hired
+  // "hates" entries cause feud penalty when both hired
+  intern:       {likes:['junior','maya_mkt'],         dislikes:[],                    hates:['chad_arrogant']},
+  junior:       {likes:['intern','morgan_qa'],        dislikes:['chad_arrogant'],     hates:[]},
+  chad_arrogant:{likes:['priya_arrogant','dmitri'],   dislikes:['junior','intern'],   hates:['clod_agent','ghat_agent','ng_clod_beta']},
+  priya_arrogant:{likes:['chad_arrogant','dmitri'],   dislikes:['clod_agent'],        hates:['ghat_agent']},
+  clod_agent:   {likes:['morgan_qa','maya_mkt'],      dislikes:['chad_arrogant'],     hates:['dmitri']},
+  morgan_qa:    {likes:['junior','clod_agent'],       dislikes:[],                    hates:[]},
+  maya_mkt:     {likes:['intern','sam_staff'],        dislikes:[],                    hates:[]},
+  ghat_agent:   {likes:[],                            dislikes:['clod_agent'],        hates:[]},
+  sam_staff:    {likes:['priya_arrogant','dmitri'],   dislikes:['intern','ghat_agent'],hates:[]},
+  cto_evelyn:   {likes:['sam_staff','priya_arrogant'],dislikes:[],                    hates:[]},
+  dmitri:       {likes:['chad_arrogant','priya_arrogant','sam_staff'],dislikes:['clod_agent','ghat_agent'],hates:[]},
+  geminus_agent:{likes:['clod_agent'],                dislikes:['ghat_agent'],        hates:[]},
+  ng_clod_beta: {likes:['morgan_qa','clod_agent'],    dislikes:['chad_arrogant'],     hates:['dmitri']},
+};
+
+function getWorkerRelStatus(worker){
+  // Returns array of {label, type:'synergy'|'feud'|'tension', otherName}
+  const rel = WORKER_RELATIONSHIPS[worker.specId];
+  if(!rel) return [];
+  const hiredIds = G.workers.map(w=>w.specId);
+  const results = [];
+  (rel.likes||[]).forEach(id=>{
+    if(hiredIds.includes(id)&&id!==worker.specId){
+      const other=G.workers.find(w=>w.specId===id);
+      if(other) results.push({label:'🤝 Synergy w/ '+other.name.split(' ')[0], type:'synergy'});
+    }
+  });
+  (rel.dislikes||[]).forEach(id=>{
+    if(hiredIds.includes(id)){
+      const other=G.workers.find(w=>w.specId===id);
+      if(other) results.push({label:'😒 Tension w/ '+other.name.split(' ')[0], type:'dislikes'});
+    }
+  });
+  (rel.hates||[]).forEach(id=>{
+    if(hiredIds.includes(id)){
+      const other=G.workers.find(w=>w.specId===id);
+      if(other) results.push({label:'💢 FEUD: '+other.name.split(' ')[0], type:'feud'});
+    }
+  });
+  return results;
+}
+
+function computeRelationshipBonus(){
+  // Returns net LPS delta from all synergies/feuds
+  let delta = 0;
+  G.workers.forEach(w=>{
+    const rel = WORKER_RELATIONSHIPS[w.specId];
+    if(!rel) return;
+    const hiredIds = G.workers.map(x=>x.specId);
+    (rel.likes||[]).forEach(id=>{ if(hiredIds.includes(id)&&id!==w.specId) delta+=2; });
+    (rel.hates||[]).forEach(id=>{ if(hiredIds.includes(id)) delta-=5; });
+    (rel.dislikes||[]).forEach(id=>{ if(hiredIds.includes(id)) delta-=1; });
+  });
+  return delta;
+}
+
+function moraleTick(dt){
+  G.workers.forEach(w=>{
+    if(w.morale===undefined) w.morale=75;
+    // Natural morale drift toward 75
+    w.morale += (75 - w.morale) * 0.002 * dt;
+    // Feuds drain morale faster
+    const rel = WORKER_RELATIONSHIPS[w.specId];
+    if(rel){
+      const hiredIds=G.workers.map(x=>x.specId);
+      const feudCount=(rel.hates||[]).filter(id=>hiredIds.includes(id)).length;
+      if(feudCount>0) w.morale = Math.max(10, w.morale - feudCount * 0.05 * dt);
+    }
+    // Clamp
+    w.morale = Math.max(0, Math.min(100, w.morale));
+    // Low morale → random quit chance (if no PTO policy)
+    if(w.morale<15 && !G.ptoEnabled && Math.random() < 0.0001 * dt){
+      addClodMsg(`⚠️ ${w.name} has quit, ${pname()}. Morale reached critical levels. I filed Report #Morale-${w.wid}: "We Could Have Seen This Coming." We could have.`,'err');
+      fireWorker(w.wid);
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// PORTFOLIO
+// ═══════════════════════════════════════════════════
+function addToPortfolio(name, genre, topic, quality, price){
+  G.portfolio.push({
+    name, genre, topic, quality: Math.floor(quality),
+    price, shipped: G.gamesShipped,
+    unitsSold: 0, revenue: 0,
+    rating: 0, ratingCount: 0,
+    id: 'g'+G.gamesShipped,
+  });
+}
+
+function renderPortfolio(){
+  const row = document.getElementById('portfolio-row');
+  if(!row) return;
+  if(G.portfolio.length===0){ row.style.display='none'; return; }
+  row.style.display='flex';
+  row.innerHTML='';
+  G.portfolio.slice().reverse().forEach(g=>{
+    const isActive = g.id === 'g'+G.gamesShipped;
+    const genreData = GENRES[g.genre];
+    const d=document.createElement('div');
+    d.className='port-card'+(isActive?' port-active':'');
+    const qualColor = g.quality>=70?'var(--accent2)':g.quality>=45?'var(--accent)':'var(--danger)';
+    d.innerHTML=`
+      <div class="port-name" title="${g.name}">${g.name}</div>
+      <div class="port-meta" style="color:${genreData?.color||'var(--muted)'}">${genreData?.label||g.genre} · ${TOPICS[g.topic]?.label||g.topic}</div>
+      <div class="port-stat">
+        <span style="color:${qualColor}">Q:${g.quality}%</span>
+        <span style="color:var(--accent)">$${g.price.toFixed(2)}</span>
+        <span style="color:var(--accent2)">${fmt(g.unitsSold)} sold</span>
+      </div>
+    `;
+    row.appendChild(d);
+  });
+}
+
+// Patch portfolio sales tallying into salesTick (called from salesTick)
+function updatePortfolioSales(earned, units){
+  if(G.portfolio.length===0) return;
+  // Most recent game gets the bulk of sales; older games trickle
+  G.portfolio.forEach((g,i)=>{
+    const age = G.portfolio.length - 1 - i; // 0 = newest
+    const share = Math.max(0.02, 1 - age * 0.18); // 100%, 82%, 64%... min 2%
+    const gEarned = earned * share;
+    const gUnits = units * share;
+    g.revenue += gEarned;
+    g.unitsSold += gUnits;
+  });
+}
 
 // ╔══════════════════════════════════════════════════════════════╗
 // ║  ERAS — the main progression                                 ║
@@ -851,6 +1487,11 @@ const HIREABLE = [
    lps:50,lpc:10,bugMod:.6,autoBug:2,rpps:2,cost:200000,salary:0,reqG:0,ng:true,
    actions:['Cross-referenced two codebases simultaneously','Filed a report about your report','Predicted the next bug 10 seconds early','Suggested a better variable name unprompted'],
   },
+  {id:'cm_taylor',ico:'💬',name:'Taylor (Community Mgr)',type:'human',typelbl:'Community Manager',isCM:true,
+   desc:'No LPS. Responds to negative reviews. Repairs reputation over time.',
+   quote:'"We hear your feedback. We\'re working on it. I\'ve been awake since Thursday."',
+   lps:0,lpc:0,bugMod:1,autoBug:0,rpps:.1,cost:6000,salary:450,reqG:4,
+   actions:['Responded to a 1-star review','Drafted apology tweet (draft 7 of 14)','Turned a refund request into a fan','Survived the Steam forum']},
 ];
 
 // ╔══════════════════════════════════════════════════════════════╗
@@ -1027,43 +1668,279 @@ function showBanner(text,ng=false){
 }
 
 // ╔══════════════════════════════════════════════════════════════╗
-// ║  STARTUP                                                     ║
+// ║  SAVE / LOAD SYSTEM                                          ║
 // ╚══════════════════════════════════════════════════════════════╝
-function startGame(){
-  const inp=document.getElementById('name-inp');
-  const raw=inp.value.trim();
-  PLAYER_NAME=raw||'dev';
-  // detect nationality
-  const lower=PLAYER_NAME.toLowerCase().replace(/[^a-z]/g,'');
-  PLAYER_NATIONALITY=NATIONALITY_HINTS[lower]||'default';
-  // apply NG+ bonuses from previous runs
-  G.lpc=Math.round(G.lpc*NG_PERMA_BONUSES.lpcMult*100)/100;
-  G.bugRate=G.bugRate*NG_PERMA_BONUSES.bugMult;
-  // hide name screen
+const SAVE_KEY = 'debuggame_save_v4';
+let lastAutoSave = 0;
+let saveFlashTimer = null;
+
+function getSavePayload(){
+  return {
+    v: 4, // save version
+    ts: Date.now(),
+    // Identity
+    PLAYER_NAME, PLAYER_NATIONALITY,
+    // NG+ meta
+    NG_RUN, NG_TOKENS, NG_PERMA_BONUSES,
+    NG_RUN_HISTORY,
+    ACTIVE_ARTIFACT, CHOSEN_ARTIFACT,
+    UNLOCKED_CLOD_UPGRADES,
+    // Core game state
+    G: {
+      ...G,
+      // workers need specId preserved for re-hydration
+      workers: G.workers.map(w => ({...w})),
+    },
+    // Systems
+    CLOD_MOOD,
+    JOURNALISTS: JOURNALISTS.map(j => ({id:j.id, rel:j.rel, lastReview:j.lastReview||null, lastReviewPositive:j.lastReviewPositive||null})),
+    COMPETITORS: COMPETITORS.map(c => ({id:c.id, progress:c.progress, gamesShipped:c.gamesShipped, lastShipped:c.lastShipped})),
+    INFLUENCER_ROSTER: INFLUENCER_ROSTER.map(i => ({id:i.id, xp:i.xp, tier:i.tier})),
+    G_INF_BONUSES,
+    G_REGIONAL, G_REGIONAL_TOTAL,
+    ACTIVE_PATENTS,
+    ENGINE_PROJECTS: ENGINE_PROJECTS.map(e => ({id:e.id, built:e.built, building:e.building, progress:e.progress})),
+    activeEngineBuild, engineBuildTick,
+    METASCORE,
+    STEAM_SALE_ACTIVE, STEAM_SALE_DISCOUNT, steamSaleCooldown,
+    // Upgrades/research bought state
+    UPGRADES_BOUGHT: UPGRADES.filter(u=>u.bought).map(u=>u.id),
+    RND_DONE: RND_TREE.filter(r=>r.done).map(r=>r.id),
+    CAMPAIGNS_RUN: CAMPAIGNS.filter(c=>c.run).map(c=>c.id),
+  };
+}
+
+function saveGame(silent=false){
+  try {
+    const payload = getSavePayload();
+    localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
+    const now = new Date();
+    const timeStr = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')+':'+now.getSeconds().toString().padStart(2,'0');
+    const el = document.getElementById('h-save');
+    if(el){
+      el.textContent = timeStr;
+      el.style.color = 'var(--accent2)';
+      clearTimeout(saveFlashTimer);
+      saveFlashTimer = setTimeout(()=>{ if(el) el.style.color='var(--muted)'; }, 1500);
+    }
+  } catch(e) {
+    console.warn('Save failed:', e);
+  }
+}
+
+function manualSave(){
+  saveGame();
+  showBanner('💾 Game saved!');
+  addClodMsg(`Game saved, ${pname()}. I've backed up ${G.gamesShipped} games, ${G.workers.length} team members, and ${Math.floor(G.techDebt)}% tech debt. The debt was not optional.`, 'ok');
+}
+
+function hasSave(){
+  try { return !!localStorage.getItem(SAVE_KEY); } catch(e){ return false; }
+}
+
+function getSavePreview(){
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(!raw) return null;
+    const s = JSON.parse(raw);
+    const ago = Math.floor((Date.now()-s.ts)/60000);
+    const agoStr = ago < 1 ? 'just now' : ago < 60 ? `${ago}m ago` : `${Math.floor(ago/60)}h ago`;
+    return {
+      name: s.PLAYER_NAME,
+      games: s.G?.gamesShipped || 0,
+      era: s.G?.era || 1,
+      revenue: s.G?.totalRevenue || 0,
+      ng: s.NG_RUN || 0,
+      agoStr,
+    };
+  } catch(e){ return null; }
+}
+
+function loadGame(data){
+  // ── Identity ──
+  PLAYER_NAME = data.PLAYER_NAME || 'dev';
+  PLAYER_NATIONALITY = data.PLAYER_NATIONALITY || 'default';
+
+  // ── NG+ meta ──
+  NG_RUN = data.NG_RUN || 0;
+  NG_TOKENS = data.NG_TOKENS || 0;
+  if(data.NG_PERMA_BONUSES) Object.assign(NG_PERMA_BONUSES, data.NG_PERMA_BONUSES);
+  if(data.NG_RUN_HISTORY) NG_RUN_HISTORY.length = 0, NG_RUN_HISTORY.push(...data.NG_RUN_HISTORY);
+  ACTIVE_ARTIFACT = data.ACTIVE_ARTIFACT || null;
+  CHOSEN_ARTIFACT = data.CHOSEN_ARTIFACT || null;
+  if(data.UNLOCKED_CLOD_UPGRADES) UNLOCKED_CLOD_UPGRADES.length = 0, UNLOCKED_CLOD_UPGRADES.push(...data.UNLOCKED_CLOD_UPGRADES);
+
+  // ── Core G ──
+  if(data.G) Object.assign(G, data.G);
+
+  // ── Systems ──
+  if(data.CLOD_MOOD !== undefined) CLOD_MOOD = data.CLOD_MOOD;
+
+  if(data.JOURNALISTS){
+    data.JOURNALISTS.forEach(saved=>{
+      const j = JOURNALISTS.find(x=>x.id===saved.id);
+      if(j){ j.rel=saved.rel||0; j.lastReview=saved.lastReview||null; j.lastReviewPositive=saved.lastReviewPositive||null; }
+    });
+  }
+
+  if(data.COMPETITORS){
+    data.COMPETITORS.forEach(saved=>{
+      const c = COMPETITORS.find(x=>x.id===saved.id);
+      if(c){ c.progress=saved.progress||0; c.gamesShipped=saved.gamesShipped||0; c.lastShipped=saved.lastShipped||'—'; }
+    });
+  }
+
+  if(data.INFLUENCER_ROSTER){
+    data.INFLUENCER_ROSTER.forEach(saved=>{
+      const inf = INFLUENCER_ROSTER.find(x=>x.id===saved.id);
+      if(inf){
+        inf.xp=saved.xp||0;
+        const prevTier=inf.tier;
+        inf.tier=saved.tier||'free';
+        // Re-apply perk effects for loaded tiers
+        if((inf.tier==='partner'||inf.tier==='mega')&&prevTier==='free') inf.partnerEff();
+        if(inf.tier==='mega'&&prevTier!=='mega') inf.megaEff();
+      }
+    });
+  }
+  if(data.G_INF_BONUSES) Object.assign(G_INF_BONUSES, data.G_INF_BONUSES);
+
+  if(data.G_REGIONAL) Object.assign(G_REGIONAL, data.G_REGIONAL);
+  if(data.G_REGIONAL_TOTAL !== undefined) G_REGIONAL_TOTAL = data.G_REGIONAL_TOTAL;
+
+  if(data.ACTIVE_PATENTS){ ACTIVE_PATENTS.length=0; ACTIVE_PATENTS.push(...data.ACTIVE_PATENTS); }
+
+  if(data.ENGINE_PROJECTS){
+    data.ENGINE_PROJECTS.forEach(saved=>{
+      const e = ENGINE_PROJECTS.find(x=>x.id===saved.id);
+      if(e){ e.built=saved.built||false; e.building=saved.building||false; e.progress=saved.progress||0; }
+    });
+  }
+  if(data.activeEngineBuild !== undefined) activeEngineBuild = data.activeEngineBuild;
+  if(data.engineBuildTick !== undefined) engineBuildTick = data.engineBuildTick;
+
+  if(data.METASCORE !== undefined) METASCORE = data.METASCORE;
+  if(data.STEAM_SALE_ACTIVE !== undefined) STEAM_SALE_ACTIVE = data.STEAM_SALE_ACTIVE;
+  if(data.STEAM_SALE_DISCOUNT !== undefined) STEAM_SALE_DISCOUNT = data.STEAM_SALE_DISCOUNT;
+  if(data.steamSaleCooldown !== undefined) steamSaleCooldown = data.steamSaleCooldown;
+
+  // ── Restore bought/done flags ──
+  if(data.UPGRADES_BOUGHT) data.UPGRADES_BOUGHT.forEach(id=>{ const u=UPGRADES.find(x=>x.id===id); if(u) u.bought=true; });
+  if(data.RND_DONE) data.RND_DONE.forEach(id=>{ const r=RND_TREE.find(x=>x.id===id); if(r) r.done=true; });
+  if(data.CAMPAIGNS_RUN) data.CAMPAIGNS_RUN.forEach(id=>{ const c=CAMPAIGNS.find(x=>x.id===id); if(c) c.run=false; }); // don't mark as running on load
+}
+
+function loadAndContinue(){
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(!raw) return;
+    const data = JSON.parse(raw);
+    loadGame(data);
+    bootIntoGame(true);
+  } catch(e) {
+    console.error('Load failed:', e);
+    showBanner('⚠️ Save corrupted — starting fresh');
+    localStorage.removeItem(SAVE_KEY);
+  }
+}
+
+function deleteSave(){
+  if(!confirm('Delete save and start fresh? CLOD will forget everything. Even the good parts.')) return;
+  localStorage.removeItem(SAVE_KEY);
+  document.getElementById('save-resume-block').style.display='none';
+  showBanner('🗑️ Save deleted. Fresh start.');
+}
+
+// Common boot logic — called by both startGame (new) and loadAndContinue
+function bootIntoGame(isLoad=false){
   document.getElementById('name-screen').style.display='none';
   document.getElementById('h-name').textContent=PLAYER_NAME;
-  // greet
-  const persona=NATIONALITY_PERSONAS[PLAYER_NATIONALITY]||NATIONALITY_PERSONAS.default;
-  setTimeout(()=>{
-    const feed=document.getElementById('clod-feed');
-    feed.innerHTML='';
-    addClodMsg(persona.greeting(PLAYER_NAME));
-  },300);
-  setTimeout(()=>{
-    addClodMsg(`I've prepared a list of potential risks for this project, ${PLAYER_NAME}. There are 47. I'll share them gradually so as not to alarm you.`,'warn');
-  },6000);
-  setTimeout(()=>{
-    addClodMsg(`Quick tip, ${PLAYER_NAME}: Sales tab is where you watch your game live or die in real time. I find it harrowing. That is appropriate.`,'think');
-  },18000);
-  renderAll();
-  requestAnimationFrame(gameTick);
+
   if(NG_RUN>0){
     document.getElementById('ng-badge').style.display='inline';
     document.getElementById('ng-stat').style.display='flex';
     document.getElementById('h-ngt').textContent=NG_TOKENS;
     document.getElementById('vtag').textContent=`v${1+NG_RUN}.0 NG+${NG_RUN}`;
-    setTimeout(()=>addClodMsg(`Welcome back, ${PLAYER_NAME}. I've reviewed your previous run. All of it. The folder is significantly larger. Shall we improve upon it?`,'ng'),1500);
   }
+  if(G.gamesShipped>=10&&G.era>=3){
+    document.getElementById('prestige-tab').style.display='inline';
+  }
+  if(G.era>1) checkEraTransition();
+
+  renderAll();
+  renderGenrePicker();
+  updateUI();
+  updateQualityUI();
+  updateMoodUI();
+  renderRegionalSales();
+  renderInfluencers();
+  renderEngines();
+  renderPatents();
+  renderJournalists();
+  renderCompetitors();
+
+  const persona=NATIONALITY_PERSONAS[PLAYER_NATIONALITY]||NATIONALITY_PERSONAS.default;
+  const feed=document.getElementById('clod-feed');
+  feed.innerHTML='';
+
+  if(isLoad){
+    const ago = (() => { try { const s=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}'); const m=Math.floor((Date.now()-(s.ts||Date.now()))/60000); return m<1?'moments ago':m<60?`${m} minutes ago`:`${Math.floor(m/60)} hours ago`; } catch(e){ return 'some time ago'; } })();
+    setTimeout(()=>addClodMsg(`Welcome back, ${PLAYER_NAME}. I've been waiting. Last save was ${ago}. I used the time to review your decisions. The folder is thicker than when you left.`, 'ng'), 300);
+    setTimeout(()=>addClodMsg(`Current status: ${G.gamesShipped} games shipped, Era ${G.era}, ${fmtM(G.cash)} cash, ${G.workers.length} team members. Tech debt: ${Math.floor(G.techDebt)}%. I want to talk about the tech debt.`, 'think'), 2500);
+  } else {
+    setTimeout(()=>{
+      addClodMsg(persona.greeting(PLAYER_NAME));
+    }, 300);
+    setTimeout(()=>addClodMsg(`I've prepared a list of potential risks for this project, ${PLAYER_NAME}. There are 47. I'll share them gradually so as not to alarm you.`,'warn'), 6000);
+    setTimeout(()=>addClodMsg(`Quick tip, ${PLAYER_NAME}: Sales tab is where you watch your game live or die in real time. I find it harrowing. That is appropriate.`,'think'), 18000);
+  }
+
+  requestAnimationFrame(gameTick);
+}
+
+// Auto-save every 30s during gameplay
+function autoSaveTick(dt){
+  lastAutoSave += dt;
+  if(lastAutoSave >= 30){
+    lastAutoSave = 0;
+    saveGame(true);
+  }
+}
+
+// Check for save on page load
+window.addEventListener('load', ()=>{
+  const preview = getSavePreview();
+  if(preview){
+    const block = document.getElementById('save-resume-block');
+    const prev = document.getElementById('save-preview');
+    if(block) block.style.display='block';
+    if(prev) prev.innerHTML = `<strong style="color:var(--text)">${preview.name}</strong> · ${preview.games} games · Era ${preview.era} · ${preview.ng>0?`NG+${preview.ng} · `:''}${fmtM(preview.revenue)} revenue<br><span style="color:var(--accent2)">Saved ${preview.agoStr}</span>`;
+    // Pre-fill name
+    const inp = document.getElementById('name-inp');
+    if(inp) inp.value = preview.name;
+  }
+});
+
+
+// Spacebar → Write Code (when not typing in an input)
+document.addEventListener('keydown', e=>{
+  if(e.code==='Space' && document.getElementById('screen-dev')?.classList.contains('active')){
+    const tag=document.activeElement?.tagName;
+    if(tag==='INPUT'||tag==='TEXTAREA') return;
+    e.preventDefault();
+    writeCode(e);
+  }
+});
+
+function startGame(){
+  const inp=document.getElementById('name-inp');
+  const raw=inp.value.trim();
+  PLAYER_NAME=raw||'dev';
+  const lower=PLAYER_NAME.toLowerCase().replace(/[^a-z]/g,'');
+  PLAYER_NATIONALITY=NATIONALITY_HINTS[lower]||'default';
+  G.lpc=Math.round(G.lpc*NG_PERMA_BONUSES.lpcMult*100)/100;
+  G.bugRate=G.bugRate*NG_PERMA_BONUSES.bugMult;
+  bootIntoGame(false);
 }
 
 // ╔══════════════════════════════════════════════════════════════╗
@@ -1077,13 +1954,23 @@ function writeCode(e){
   G.researchPoints+=0.5;
   particle(r.left+r.width/2-25,r.top-10,`+${gained}`,'var(--accent)');
   for(let i=0;i<Math.min(gained,3);i++)addCodeLine();
-  if(Math.random()<G.bugRate&&G.bugs<G.maxBugs){
+  // Bug chance boosted by tech debt
+  const debtBugBoost=1+(G.techDebt/100)*1.5;
+  if(Math.random()<G.bugRate*debtBugBoost&&G.bugs<G.maxBugs){
     G.bugs++;
+    // Writing sloppy code nudges quality down
+    G.codeQuality=Math.max(0,G.codeQuality-0.3);
+    // Each bug adds a tiny sliver of tech debt
+    G.techDebt=Math.min(100,G.techDebt+0.15);
     addClodMsg(rand(CLOD_BUG_MSGS)(pname()),'warn');
     bugParticle(r.left+r.width/2,r.top);
+  } else {
+    // Clean code tick nudges quality up slightly
+    G.codeQuality=Math.min(100,G.codeQuality+0.08);
   }
   if(G.tickCount%8===0)addClodMsg(rand(CLOD_WRITE_MSGS)(pname()));
   checkFeature();updateUI();
+  updateQualityUI();
 }
 
 function debugCode(e){
@@ -1092,9 +1979,13 @@ function debugCode(e){
   const r=btn.getBoundingClientRect();
   const f=Math.min(G.bugsPerDebug,G.bugs);
   G.bugs=Math.max(0,G.bugs-f);G.bugsFixed+=f;
+  // Fixing bugs improves quality and shaves tech debt
+  G.codeQuality=Math.min(100,G.codeQuality+f*1.5);
+  G.techDebt=Math.max(0,G.techDebt-f*0.8);
+  boostMood(f*2); // fixing bugs pleases CLOD
   particle(r.left,r.top-15,`Fixed ${f}x`,'var(--accent2)');
   addClodMsg(rand(CLOD_DEBUG_MSGS)(pname()),'ok');
-  updateUI();
+  updateUI();updateQualityUI();
 }
 
 function checkFeature(){
@@ -1152,35 +2043,97 @@ function shipGame(){
   const eraIdx=Math.min(Math.floor((G.gamesShipped-1)/4),GAME_NAMES_BY_ERA.length-1);
   const pool=GAME_NAMES_BY_ERA[eraIdx];
   G.currentGameName=pool[(G.gamesShipped-1)%pool.length];
-  G.gamePrice=(GAME_PRICE_BY_GAME[Math.min(G.gamesShipped-1,GAME_PRICE_BY_GAME.length-1)])*NG_PERMA_BONUSES.cashMult;
-  // wishlist conversions
-  const wSales=Math.floor(G.wishlists*0.4);
+
+  // Genre price bonus + combo multiplier
+  const genreData=GENRES[G.selectedGenre]||GENRES.action;
+  const comboMult=getComboMult();
+  const basePrice=GAME_PRICE_BY_GAME[Math.min(G.gamesShipped-1,GAME_PRICE_BY_GAME.length-1)];
+  G.gamePrice=(basePrice+(genreData.priceBonus||0))*NG_PERMA_BONUSES.cashMult;
+
+  // Tech debt punishes review score; quality boosts it
+  const qualFactor=G.codeQuality/100; // 0–1
+  // Shipping with bugs adds tech debt
+  G.techDebt=Math.min(100,G.techDebt+(G.bugs*2)+(G.codeQuality<40?10:0));
+  // Add to portfolio
+  addToPortfolio(G.currentGameName,G.selectedGenre,G.selectedTopic,G.codeQuality,G.gamePrice);
+
+  // wishlist conversions — boosted by combo mult and quality
+  const wSales=Math.floor(G.wishlists*0.4*comboMult*(0.7+qualFactor*0.6));
   G.unitsSold+=wSales;G.totalRevenue+=wSales*G.gamePrice;
   G.cash+=wSales*G.gamePrice;G.wishlists=0;
+
+  // CLOD reacts to genre choice
+  const genreReactions={
+    action:`Action game, ${PLAYER_NAME}. Fast. Violent. No time for comments. I still left comments.`,
+    rpg:`RPG, ${PLAYER_NAME}. I've pre-written 40 pages of lore concerns. Where should I send them?`,
+    sim:`Simulation, ${PLAYER_NAME}. Finally something I relate to. I also simulate being helpful.`,
+    strategy:`Strategy, ${PLAYER_NAME}. I've modeled 47 failure scenarios. Would you like them ranked?`,
+    horror:`Horror, ${PLAYER_NAME}. The bugs won't be scarier than the ones you're already shipping. Probably.`,
+    puzzle:`Puzzle, ${PLAYER_NAME}. The hardest puzzle here is the codebase you created. I appreciate the meta quality.`,
+    platformer:`Platformer, ${PLAYER_NAME}. Classic. I prepared a concern about jump physics. It's 14 pages.`,
+    cozy:`Cozy, ${PLAYER_NAME}. Low bugs expected. High expectations expected. I filed concerns anyway.`,
+  };
+  // Combo note from CLOD
+  const combo=getCombo();
+  const comboClod=combo
+    ? (combo.mult>=1.2 ? `Also: ${combo.note} — excellent genre/topic pairing. I'm filing this under "Decisions That Made Sense."` : `However: ${combo.note}. I'm filing this under "Concerns About Positioning."`)
+    : '';
+
   // bonus
   const bonus=G.gamesShipped*800*(1+NG_RUN*0.5);
   G.lines+=bonus;G.totalLines+=bonus;
-  // scale up
-  G.lps*=1.1;G.lpc+=Math.ceil(G.gamesShipped*0.5);
+  // scale up — quality affects LPS boost
+  G.lps*=(1.05+qualFactor*0.1);G.lpc+=Math.ceil(G.gamesShipped*0.5);
   G.featsDone=0;G.featsNeeded=Math.floor(G.featsNeeded*1.5+G.gamesShipped*2);
   G.featGoal=Math.floor(G.featGoal*1.08);
   G.bugs=Math.max(0,G.bugs-5);G.researchPoints+=20+G.gamesShipped*2;
-  G.salesPerHour=60+G.hype*3+G.gamesShipped*30;
+  G.salesPerHour=(60+G.hype*3+G.gamesShipped*30)*comboMult*(0.7+qualFactor*0.6);
+  // GiantBrain mega perk: essay launch boost
+  if(G_INF_BONUSES.giantbrainLaunchBoost > 1 && ['strategy','rpg','sim'].includes(G.selectedGenre)){
+    const boost=G_INF_BONUSES.giantbrainLaunchBoost;
+    G.salesPerHour*=boost;
+    setTimeout(()=>addClodMsg(`GiantBrainGames posted an essay about "${G.currentGameName}", ${pname()}. Launch sales ×${boost.toFixed(1)}. I've filed this under "Unexpected Allies."`, 'ok'), 4000);
+  }
+  // CasualFran mega perk: viral clip chance
+  if(G_INF_BONUSES.casualViralChance > 0 && Math.random()<G_INF_BONUSES.casualViralChance){
+    G.hype=Math.min(100,G.hype+20);
+    setTimeout(()=>addClodMsg(`CasualGamer_Fran's clip of "${G.currentGameName}" just went viral, ${pname()}. Hype +20. Wishlists spiking. I'm monitoring. Cautiously.`,'ok'),5000);
+  }
+  // Award influencer XP on every ship
+  awardCampaignInfluencerXP(G.selectedGenre);
   G.activePlayers+=wSales;
   G.mps=(G.gamePrice*G.salesPerHour)/3600;
+
+  // Reset quality toward 50 at start of new game
+  G.codeQuality=50;
+
   addClodMsg(getShipMsg(G.gamesShipped),'ok');
+  setTimeout(()=>addClodMsg((genreReactions[G.selectedGenre]||`${genreData.label} shipped, ${PLAYER_NAME}.`)+' '+comboClod,'think'),1200);
   showBanner(`🎮 "${G.currentGameName}" LAUNCHED! ${wSales} wishlists converted!`);
   document.getElementById('game-badge').textContent=`"${G.currentGameName}" @ ${fmtM(G.gamePrice)}`;
+
+  // Low quality warning from CLOD
+  if(G.codeQuality<35){
+    drainMood(15);
+    setTimeout(()=>addClodMsg(`${PLAYER_NAME}, the quality at ship was ${Math.floor(qualFactor*100)}%. I've filed Report #QA-${G.gamesShipped}: "We Shipped This." It contains photos.`,'warn'),2500);
+  } else {
+    boostMood(10);
+  }
+  if(G.techDebt>60){
+    setTimeout(()=>addClodMsg(`Tech debt is now ${Math.floor(G.techDebt)}%, ${PLAYER_NAME}. The codebase is starting to have opinions about us. They are not positive.`,'err'),3500);
+  }
+
   spawnReview();
   checkEraTransition();
-  // NG+ prestige check
+  renderPortfolio();
+  updateQualityUI();
   if(G.gamesShipped>=10&&G.era>=3){
     document.getElementById('prestige-tab').style.display='inline';
     renderPrestige();
   }
-  // endgame
   if(G.gamesShipped>=25&&G.era>=5&&!G.ended)setTimeout(()=>triggerEndgame(),3000);
   renderAll();updateUI();
+  saveGame();
 }
 
 // ╔══════════════════════════════════════════════════════════════╗
@@ -1193,6 +2146,7 @@ function salesTick(dt){
   G.cash+=earned;G.totalCash+=earned;G.totalRevenue+=earned;G.mps=earned/dt;
   G.unitsSold+=(G.salesPerHour/3600)*dt;
   G.activePlayers=Math.max(0,G.activePlayers+((G.salesPerHour/3600)*dt-G.activePlayers*0.00008*dt));
+  regionalSalesTick(earned);
   G.lastSalesTick=(G.lastSalesTick||0)+dt;
   if(G.lastSalesTick>2){
     chartHistory.push(Math.round(G.salesPerHour));
@@ -1240,7 +2194,8 @@ function drawSalesChart(){
 // ╚══════════════════════════════════════════════════════════════╝
 function hypeTick(dt){
   G.hype=Math.max(0,G.hype-0.025*dt);
-  G.workers.forEach(w=>{if(w.hypePerSec)G.hype=Math.min(G.maxHype,G.hype+w.hypePerSec*dt);});
+  const infMult = getInfluencerHypeMultiplier();
+  G.workers.forEach(w=>{if(w.hypePerSec)G.hype=Math.min(G.maxHype,G.hype+w.hypePerSec*dt*infMult);});
   if(G.hype>10)G.wishlists+=(G.hype*0.12+G.gamesShipped*2.5)*dt;
   if(G.activeCampaign){
     G.campaignTick+=dt;
@@ -1250,6 +2205,7 @@ function hypeTick(dt){
       G.wishlists+=camp.wl;
       G.activeCampaign=null;G.campaignTick=0;camp.run=false;
       showBanner(`✅ "${camp.name}" done! +${camp.hype} hype!`);
+      awardCampaignInfluencerXP(G.selectedGenre);
       camp.posts.forEach((p,i)=>setTimeout(()=>spawnInf(p),i*2000));
       renderCampaigns();
     }
@@ -1420,6 +2376,13 @@ function canPrestige(){return G.gamesShipped>=10&&G.era>=3;}
 
 function doPrestige(){
   if(!canPrestige())return;
+  // Record run history for cross-run memory
+  recordRunHistory();
+  // Apply chosen artifact
+  if(CHOSEN_ARTIFACT){
+    const art = PRESTIGE_ARTIFACTS.find(a=>a.id===CHOSEN_ARTIFACT);
+    if(art){ ACTIVE_ARTIFACT=CHOSEN_ARTIFACT; }
+  }
   NG_RUN++;
   NG_TOKENS+=G.gamesShipped+G.era*5;
   // Apply permanent bonuses
@@ -1432,6 +2395,25 @@ function doPrestige(){
   UPGRADES.forEach(u=>{u.bought=false;});
   RND_TREE.forEach(r=>{r.done=false;});
   CAMPAIGNS.forEach(c=>{c.run=false;});
+  // Reset journalist rels slightly (doesn't fully reset — rep persists somewhat)
+  JOURNALISTS.forEach(j=>{ j.rel=Math.max(0,j.rel-30); j.lastReview=null; });
+  // Reset competitors
+  COMPETITORS.forEach(c=>{ c.progress=0; });
+  // Reset regional sales
+  G_REGIONAL={na:0,eu:0,asia:0,latam:0,row:0}; G_REGIONAL_TOTAL=0;
+  // Reset patents (they expire naturally; engines carry over as built)
+  ACTIVE_PATENTS=[];
+  // Reset influencer XP (tier perks carry though — rep persists)
+  INFLUENCER_ROSTER.forEach(i=>{ i.xp=Math.floor(i.xp*0.4); }); // keep 40% XP
+  G_INF_BONUSES={actionHypeBoost:1,rpgWishlistBoost:1,cozyHypeBoost:1,strategyMetaBoost:1,techDebtReduction:1,giantbrainLaunchBoost:1,casualViralChance:0,bugViralBoost:0,retrodevReviewBoost:1,xprogamerAutoPost:false};
+  // Re-apply still-active tier perks
+  INFLUENCER_ROSTER.forEach(i=>{
+    if(i.tier==='partner'||i.tier==='mega') i.partnerEff();
+    if(i.tier==='mega') i.megaEff();
+  });
+  // Reset engine builds (built stays, but progress resets for non-built)
+  ENGINE_PROJECTS.forEach(e=>{ if(!e.built){ e.progress=0; e.building=false; } });
+  activeEngineBuild=null; engineBuildTick=0;
   // Reset G (keep NG fields)
   const savedName=PLAYER_NAME;
   Object.assign(G,{
@@ -1449,7 +2431,15 @@ function doPrestige(){
     demand:{graphics:50,gameplay:50,story:30,multiplayer:20,performance:60},
     tickCount:0,lastMilestone:0,lastShipMilestone:-1,ended:false,
     eraGates:[0,3,7,12,18,25],lastCrisisTick:0,crisisActive:null,
+    codeQuality:50, techDebt:0, selectedGenre:'action', selectedTopic:'space', portfolio:[],
   });
+  // Apply artifact effect NOW (after reset so it stacks correctly)
+  if(ACTIVE_ARTIFACT){
+    const art = PRESTIGE_ARTIFACTS.find(a=>a.id===ACTIVE_ARTIFACT);
+    if(art) art.eff();
+  }
+  CHOSEN_ARTIFACT = null;
+  CLOD_MOOD = 50;
   // Show NG badges
   document.getElementById('ng-badge').style.display='inline';
   document.getElementById('ng-stat').style.display='flex';
@@ -1457,14 +2447,23 @@ function doPrestige(){
   document.getElementById('vtag').textContent=`v${1+NG_RUN}.0 NG+${NG_RUN}`;
   document.getElementById('era-badge').style.display='none';
   showScreen('dev');
-  // NG greeting
+  renderGenrePicker();
+  // NG greeting with cross-run memory
   const feed=document.getElementById('clod-feed');feed.innerHTML='';
-  const persona=NATIONALITY_PERSONAS[PLAYER_NATIONALITY]||NATIONALITY_PERSONAS.default;
+  const memoryMsg = getCrossRunMemoryMsg();
   setTimeout(()=>{
     addClodMsg(`Welcome to NG+ Run ${NG_RUN}, ${savedName}. I have reviewed everything from the previous run. All of it. I have an updated folder. It is substantial. Your permanent bonuses: LPC x${NG_PERMA_BONUSES.lpcMult.toFixed(1)}, LPS x${NG_PERMA_BONUSES.lpsMult.toFixed(1)}, Revenue x${NG_PERMA_BONUSES.cashMult.toFixed(1)}. Shall we do this better?`,'ng');
   },500);
+  if(memoryMsg){
+    setTimeout(()=>addClodMsg(memoryMsg,'ng'),2500);
+  }
+  if(ACTIVE_ARTIFACT){
+    const art=PRESTIGE_ARTIFACTS.find(a=>a.id===ACTIVE_ARTIFACT);
+    setTimeout(()=>addClodMsg(`Artifact activated: "${art.name}". ${art.desc} I've noted its effects. I have concerns about some of them.`,'ng'),4000);
+  }
   showBanner(`⚡ NG+ RUN ${NG_RUN} STARTED! Permanent bonuses applied!`,true);
   renderAll();updateUI();
+  saveGame();
 }
 
 function renderPrestige(){
@@ -1476,6 +2475,8 @@ function renderPrestige(){
   document.getElementById('prestige-warn').textContent=canDo
     ? `⚠️ Prestiging resets your studio. All progress is lost. Permanent multipliers remain and increase. CLOD is 47% concerned and 53% excited.`
     : `🔒 Requirements: Ship at least 10 games AND reach Era 3. Current: ${G.gamesShipped}/10 games, Era ${G.era}/3.`;
+  renderArtifacts();
+  renderCLODTree();
   const bonDiv=document.getElementById('prestige-bonuses');
   bonDiv.innerHTML=NG_BONUSES.map(b=>`
     <div class="pb-card">
@@ -1519,107 +2520,38 @@ function triggerEndgame(){
 // ╔══════════════════════════════════════════════════════════════╗
 // ║  CLOD API                                                    ║
 // ╚══════════════════════════════════════════════════════════════╝
-function escHtml(str){
-  return String(str).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
-}
-
-function localClodReply(q){
-  const t=q.toLowerCase();
-  const persona=NATIONALITY_PERSONAS[PLAYER_NATIONALITY]||NATIONALITY_PERSONAS.default;
-  const mood=G.bugs>120?'catastrophic':G.bugs>50?'concerning':'stable-ish';
-  const focus=t.includes('bug')?'bugs':
-    (t.includes('money')||t.includes('cash')||t.includes('profit'))?'money':
-    (t.includes('team')||t.includes('hire')||t.includes('worker'))?'team':
-    (t.includes('ship')||t.includes('release')||t.includes('launch'))?'shipping':
-    (t.includes('upgrade')||t.includes('research'))?'upgrades':'architecture';
-  const lineA=`Incident Report #${100+Math.floor(Math.random()*900)}: ${PLAYER_NAME}, current studio state is ${mood} with ${G.bugs} active bugs, ${G.workers.length} teammates, and ${fmtM(G.cash)} cash.`;
-  const lineB={
-    bugs:'Bug policy: stop feature creep for one cycle and burn down defects before they start breeding.',
-    money:'Cashflow policy: prioritize ROI upgrades, avoid vanity hires, and ship on a cadence.',
-    team:'Team policy: one builder, one fixer, one optimizer. Too many heroes, no throughput.',
-    shipping:'Release policy: ship smaller, more often, and let hype compound instead of waiting for perfection.',
-    upgrades:'R&D policy: buy multipliers first, then quality-of-life upgrades, then flavor tech.',
-    architecture:'Architecture policy: reduce chaos, automate boring work, and name variables like adults.'
-  }[focus];
-  const lineC=`Folder update: "Run-${NG_RUN}-Era-${G.era}" now contains your question and my polite concern.`;
-  return `${persona.quirk} ${lineA} ${lineB} ${lineC}`;
-}
-
 async function askClod(){
   const inp=document.getElementById('clod-inp');
   const q=inp.value.trim();if(!q)return;
   const feed=document.getElementById('clod-feed');
   const ud=document.createElement('div');ud.className='cmsg you';
-  ud.innerHTML=`<div class="mtag you">YOU</div>${escHtml(q)}`;
+  ud.innerHTML=`<div class="mtag you">YOU</div>${q}`;
   feed.appendChild(ud);feed.scrollTop=feed.scrollHeight;
   inp.value='';inp.disabled=true;
-
-  if(/^\/key\s+clear$/i.test(q)){
-    localStorage.removeItem('clod_api_key');
-    addClodMsg(`API key removed, ${PLAYER_NAME}. Local mode only. Incident Report closed.`,'ok');
-    document.getElementById('clod-status').textContent='ready';
-    inp.disabled=false;inp.focus();
-    return;
-  }
-  const setKey=q.match(/^\/key\s+(.+)$/i);
-  if(setKey){
-    localStorage.setItem('clod_api_key',setKey[1].trim());
-    addClodMsg(`API key stored for this browser, ${PLAYER_NAME}. I will attempt cloud mode next message.`,'ok');
-    document.getElementById('clod-status').textContent='ready';
-    inp.disabled=false;inp.focus();
-    return;
-  }
-
   document.getElementById('clod-status').textContent='thinking...';
   const td=document.createElement('div');td.className='cmsg think';td.id='clod-typing';
-  td.innerHTML=`<div class="mtag">CLOD</div><span id="typing-dots">...</span>`;
+  td.innerHTML=`<div class="mtag">CLOD</div><span id="typing-dots">▋</span>`;
   feed.appendChild(td);feed.scrollTop=feed.scrollHeight;
-  const iv=setInterval(()=>{
-    const d=document.getElementById('typing-dots');
-    if(d)d.textContent=d.textContent.length<5?d.textContent+'.':'.';
-  },300);
-
+  const iv=setInterval(()=>{const d=document.getElementById('typing-dots');if(d)d.textContent=d.textContent.length<5?d.textContent+'▋':'▋';},300);
   const persona=NATIONALITY_PERSONAS[PLAYER_NATIONALITY]||NATIONALITY_PERSONAS.default;
-  const ctx=`The user's name is ${PLAYER_NAME}. Studio context: ${G.gamesShipped} games shipped, Era ${G.era}, ${G.workers.length} team members, ${G.bugs} active bugs, ${fmtM(G.cash)} cash, ${Math.floor(G.hype)} hype, ${fmt(G.totalLines)} total lines written. NG+ run: ${NG_RUN}.`;
-  const sysPrompt=`You are CLOD (Contextual Logic & Obfuscation Daemon). ${persona.style} ${persona.quirk} Always address the user as ${PLAYER_NAME}. Keep responses to 2-4 dense sentences - you're a chat widget. Reference your "Incident Reports" and "folders" on the user. Be genuinely funny and in-character. ${ctx}`;
-  const apiKey=(localStorage.getItem('clod_api_key')||'').trim();
-  let text='';
-
+  const moodCtx = getMoodContext();
+  const ctx=`The user's name is ${PLAYER_NAME}. Studio context: ${G.gamesShipped} games shipped, Era ${G.era}, ${G.workers.length} team members, ${G.bugs} active bugs, ${fmtM(G.cash)} cash, ${Math.floor(G.hype)} hype, ${fmt(G.totalLines)} total lines written. NG+ run: ${NG_RUN}. Code quality: ${Math.floor(G.codeQuality)}%. Tech debt: ${Math.floor(G.techDebt)}%. Genre: ${G.selectedGenre}. ${moodCtx}`;
+  const sysPrompt=`You are CLOD (Contextual Logic & Obfuscation Daemon). ${persona.style} ${persona.quirk} Always address the user as ${PLAYER_NAME}. Keep responses to 2-4 dense sentences — you're a chat widget. Reference your "Incident Reports" and "folders" on the user. Be genuinely funny and in-character. ${ctx}`;
   try{
-    if(apiKey){
-      const resp=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "x-api-key":apiKey,
-          "anthropic-version":"2023-06-01",
-          "anthropic-dangerous-direct-browser-access":"true"
-        },
-        body:JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:220,
-          system:sysPrompt,
-          messages:[{role:"user",content:q}]
-        })
-      });
-      if(resp.ok){
-        const data=await resp.json();
-        text=(Array.isArray(data.content)?data.content:[])
-          .filter(b=>b && typeof b.text==='string')
-          .map(b=>b.text.trim())
-          .join('\n')
-          .trim();
-      }
-    }
-  }catch(_err){}
-
-  if(!text){
-    text=localClodReply(q);
+    const resp=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sysPrompt,messages:[{role:"user",content:q}]})
+    });
+    const data=await resp.json();
+    const text=data.content?.map(b=>b.text||'').join('')||`I tried to respond, ${PLAYER_NAME}. Something went wrong. I've filed Incident Report #404.`;
+    clearInterval(iv);document.getElementById('clod-typing')?.remove();
+    addClodMsg(text);document.getElementById('clod-status').textContent='ready';
+  }catch(err){
+    clearInterval(iv);document.getElementById('clod-typing')?.remove();
+    addClodMsg(`Network error, ${PLAYER_NAME}. Post-mortem: not my fault, but I accept partial responsibility.`,'err');
+    document.getElementById('clod-status').textContent='error';
+    setTimeout(()=>document.getElementById('clod-status').textContent='ready',2000);
   }
-
-  clearInterval(iv);document.getElementById('clod-typing')?.remove();
-  addClodMsg(text);
-  document.getElementById('clod-status').textContent='ready';
   inp.disabled=false;inp.focus();
 }
 
@@ -1669,7 +2601,13 @@ function renderRoster(){
     el.innerHTML='<div style="padding:.65rem;font-size:.6rem;color:var(--muted);text-align:center">Just you and CLOD.<br>CLOD counts as half a person.</div>';
     return;
   }
+  const relBonus=computeRelationshipBonus();
   G.workers.forEach(w=>{
+    if(w.morale===undefined)w.morale=75;
+    const morale=Math.floor(w.morale);
+    const moraleColor=morale>=60?'var(--accent2)':morale>=30?'var(--accent)':'var(--danger)';
+    const rels=getWorkerRelStatus(w);
+    const relHTML=rels.length?`<div class="rel-chips">${rels.map(r=>`<span class="rel-chip ${r.type==='synergy'?'likes':r.type==='feud'?'feud':'dislikes'}">${r.label}</span>`).join('')}</div>`:'';
     const d=document.createElement('div');
     d.className=`worker-card ${w.ng?'ng-worker':w.type}`;
     d.innerHTML=`
@@ -1682,28 +2620,54 @@ function renderRoster(){
         ${w.rpps>0?`<span class="wstat">${w.rpps} RP/s</span>`:''}
         ${w.salary>0?`<span class="wstat r">-$${w.salary}/c</span>`:''}
       </div>
+      <div class="morale-row">
+        <div class="morale-lbl"><span>Morale</span><span style="color:${moraleColor}">${morale}%</span></div>
+        <div class="morale-bar"><div class="morale-fill" style="width:${morale}%;background:${moraleColor}"></div></div>
+      </div>
+      ${relHTML}
       <div class="wquote">${w.quote}</div>
       <div class="waction">→ ${w.lastAction||'working...'}</div>`;
     el.appendChild(d);
   });
+  // Show team relationship summary if significant
+  if(relBonus!==0){
+    const label=relBonus>0?`🤝 Team synergy: +${relBonus} LPS bonus`:`💢 Team feuds: ${relBonus} LPS penalty`;
+    const color=relBonus>0?'var(--accent2)':'var(--danger)';
+    const d=document.createElement('div');
+    d.style.cssText=`font-size:.54rem;color:${color};padding:.3rem .5rem;border-top:1px solid var(--border);text-align:center;`;
+    d.textContent=label;
+    el.appendChild(d);
+  }
 }
 
 function renderHireGrid(){
   const el=document.getElementById('hire-grid');el.innerHTML='';
   const ng=NG_RUN>0;
+  const hiredIds=G.workers.map(w=>w.specId);
   HIREABLE.filter(h=>!h.ng||ng).forEach(h=>{
     const alreadyHired=G.workers.find(w=>w.specId===h.id);
     const canAfford=G.cash>=h.cost;
     const meetsG=G.gamesShipped>=h.reqG;
     const cant=!canAfford||!meetsG||alreadyHired;
+    // Build relationship preview based on who's already hired
+    const relDef=WORKER_RELATIONSHIPS[h.id]||{};
+    const synergies=(relDef.likes||[]).filter(id=>hiredIds.includes(id));
+    const tensions=(relDef.dislikes||[]).filter(id=>hiredIds.includes(id));
+    const feuds=(relDef.hates||[]).filter(id=>hiredIds.includes(id));
+    const relPreview=[
+      ...synergies.map(id=>{const w=G.workers.find(x=>x.specId===id);return w?`<span class="rel-chip likes">🤝 ${w.name.split(' ')[0]}</span>`:'';}),
+      ...tensions.map(id=>{const w=G.workers.find(x=>x.specId===id);return w?`<span class="rel-chip dislikes">😒 ${w.name.split(' ')[0]}</span>`:'';}),
+      ...feuds.map(id=>{const w=G.workers.find(x=>x.specId===id);return w?`<span class="rel-chip feud">💢 ${w.name.split(' ')[0]}</span>`:'';}),
+    ].filter(Boolean).join('');
     const d=document.createElement('div');
     d.className='hire-card'+(cant?' cant':'')+(h.ng?' ng-hire':'');
     d.innerHTML=`
       <div class="hc-name">${h.ico} ${h.name}</div>
       <div class="hc-type ${h.ng?'ng-t':h.type}">${h.typelbl}</div>
       <div class="hc-desc">${h.desc}</div>
+      ${relPreview?`<div class="rel-chips" style="margin:.2rem 0">${relPreview}</div>`:''}
       <div class="hc-cost">${alreadyHired?'✓ On team':meetsG?fmtM(h.cost):`🔒 Need ${h.reqG} games`}</div>`;
-    if(!cant)d.onclick=()=>hirePerson(h.id);
+    if(!cant)d.onclick=()=>openHireNegotiation(h.id);
     el.appendChild(d);
   });
 }
@@ -1761,6 +2725,16 @@ function renderDemand(){
 function renderStats(){
   const el=document.getElementById('rpanel-stats');
   el.innerHTML=`
+    <div class="srow"><span class="skey">Patent Royalties</span><span class="sval g">${fmtM(ACTIVE_PATENTS.filter(p=>p.active).reduce((s,p)=>s+p.income,0))}/s</span></div>
+    <div class="srow"><span class="skey">Active Patents</span><span class="sval">${ACTIVE_PATENTS.filter(p=>p.active).length}</span></div>
+    <div class="srow"><span class="skey">Inf. Partners</span><span class="sval y">${INFLUENCER_ROSTER.filter(i=>i.tier!=='free').length}/5</span></div>
+    <div class="srow"><span class="skey">Top Region</span><span class="sval" style="color:var(--clod)">${(()=>{const r=Object.entries(G_REGIONAL).sort((a,b)=>b[1]-a[1])[0];return r?REGIONS.find(x=>x.id===r[0])?.label+'  '+fmtM(r[1]):'—';})()}</span></div>
+    <div class="srow"><span class="skey">Genre</span><span class="sval" style="color:${GENRES[G.selectedGenre]?.color||'var(--muted)'}">${GENRES[G.selectedGenre]?.label||'—'}</span></div>
+    <div class="srow"><span class="skey">Topic</span><span class="sval">${TOPICS[G.selectedTopic]?.label||'—'}</span></div>
+    <div class="srow"><span class="skey">Code Quality</span><span class="sval ${G.codeQuality>=70?'g':G.codeQuality>=40?'y':'r'}">${Math.floor(G.codeQuality)}%</span></div>
+    <div class="srow"><span class="skey">Tech Debt</span><span class="sval ${G.techDebt>=60?'r':G.techDebt>=30?'y':'g'}">${Math.floor(G.techDebt)}%</span></div>
+    <div class="srow"><span class="skey">Combo Mult</span><span class="sval ${getComboMult()>=1?'g':'r'}">×${getComboMult().toFixed(2)}</span></div>
+    <div class="srow"><span class="skey">Team Rel Bonus</span><span class="sval ${computeRelationshipBonus()>=0?'g':'r'}">${computeRelationshipBonus()>0?'+':''}${computeRelationshipBonus()} LPS</span></div>
     <div class="srow"><span class="skey">Player</span><span class="sval y">${PLAYER_NAME}</span></div>
     <div class="srow"><span class="skey">NG+ Run</span><span class="sval p">${NG_RUN}</span></div>
     <div class="srow"><span class="skey">Era</span><span class="sval p">${G.era} — ${ERAS[Math.min(G.era-1,ERAS.length-1)].name}</span></div>
@@ -1836,6 +2810,8 @@ function updateUI(){
 
 function renderAll(){
   renderUpgrades();renderTeam();renderRnD();renderCampaigns();renderDemand();
+  renderCompetitors();renderJournalists();renderCLODTree();renderArtifacts();
+  renderEngines();renderPatents();renderInfluencers();renderRegionalSales();
   if(G.gamesShipped>=10&&G.era>=3)renderPrestige();
 }
 
@@ -1881,9 +2857,950 @@ function checkMilestones(){
 }
 
 // ╔══════════════════════════════════════════════════════════════╗
-// ║  MAIN LOOP                                                   ║
+// ║  CLOD MOOD SYSTEM                                           ║
 // ╚══════════════════════════════════════════════════════════════╝
-let lastTick=Date.now();
+function moodTick(dt){
+  // Mood drifts toward 50 naturally
+  CLOD_MOOD += (50 - CLOD_MOOD) * 0.003 * dt;
+  // Fixing bugs makes CLOD happy
+  // Bugs existing make CLOD sad (already handled by events)
+  // High tech debt depresses mood slowly
+  if(G.techDebt > 50) CLOD_MOOD = Math.max(0, CLOD_MOOD - 0.01*(G.techDebt-50)*dt);
+  // Good quality makes CLOD happy
+  if(G.codeQuality > 70) CLOD_MOOD = Math.min(100, CLOD_MOOD + 0.008*dt);
+  CLOD_MOOD = Math.max(0, Math.min(100, CLOD_MOOD));
+  updateMoodUI();
+}
+
+function updateMoodUI(){
+  const state = getClodMoodState();
+  const fill = document.getElementById('mood-fill');
+  const emoji = document.getElementById('mood-emoji');
+  const desc = document.getElementById('mood-desc');
+  if(fill){ fill.style.width = CLOD_MOOD+'%'; fill.style.background = state.color; }
+  if(emoji) emoji.textContent = state.emoji;
+  if(desc) desc.textContent = state.label;
+}
+
+function boostMood(amount, reason){
+  CLOD_MOOD = Math.min(100, CLOD_MOOD + amount);
+  updateMoodUI();
+}
+function drainMood(amount){
+  CLOD_MOOD = Math.max(0, CLOD_MOOD - amount);
+  updateMoodUI();
+}
+
+// Mood affects CLOD's message tone — inject into context
+function getMoodContext(){
+  const s = getClodMoodState();
+  if(CLOD_MOOD < 20) return `(CLOD is in a terrible mood right now. Everything is wrong. The concern level is maximum.)`;
+  if(CLOD_MOOD > 80) return `(CLOD is genuinely happy right now, which is rare and slightly alarming. CLOD is being positive but can't entirely suppress concerns.)`;
+  return '';
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  COMPETITOR STUDIOS                                         ║
+// ╚══════════════════════════════════════════════════════════════╝
+let competitorTick = 0;
+function competitorsTick(dt){
+  if(G.gamesShipped === 0) return;
+  competitorTick += dt;
+  if(competitorTick < 3) return;
+  competitorTick = 0;
+
+  COMPETITORS.forEach(c=>{
+    // Competitors progress toward shipping. Speed scales with era.
+    const speed = c.baseSpeed * (0.5 + G.era * 0.15) * 3;
+    c.progress = Math.min(100, c.progress + speed);
+    if(c.progress >= 100){
+      c.progress = 0;
+      c.gamesShipped++;
+      c.lastShipped = GAME_NAMES_BY_ERA[Math.min(Math.floor(c.gamesShipped/4), GAME_NAMES_BY_ERA.length-1)][c.gamesShipped % 4];
+      c.shipping = true;
+      setTimeout(()=>{ c.shipping=false; }, 5000);
+      // If competitor genre matches player's genre — it hurts sales
+      if(c.genreFocus === G.selectedGenre){
+        G.salesPerHour = Math.max(0, G.salesPerHour * 0.92);
+        drainMood(5);
+        if(Math.random() < 0.5){
+          addClodMsg(`${c.name} just shipped a ${c.genreFocus} game, ${pname()}. Direct competition. I've filed Report #Competitor-${c.gamesShipped}: "They Are In Your Lane." Adjust.`,'warn');
+        }
+      }
+      renderCompetitors();
+    }
+  });
+  if(competitorTick % 30 === 0) renderCompetitors();
+}
+
+function renderCompetitors(){
+  const el = document.getElementById('competitor-strip');
+  if(!el) return;
+  el.innerHTML = '';
+  COMPETITORS.forEach(c=>{
+    const isThreat = c.genreFocus === G.selectedGenre;
+    const d = document.createElement('div');
+    d.className = 'comp-card' + (isThreat?' threat':'');
+    d.innerHTML = `
+      <div class="comp-name" style="color:${c.color}">${c.name}</div>
+      <div class="comp-meta">${c.tagline}</div>
+      <div class="comp-progress"><div class="comp-pfill" style="width:${c.progress}%;background:${c.color}"></div></div>
+      <div class="comp-meta">${c.gamesShipped} games · ${c.shipping?'🚀 Shipping!':'Next: '+(100-Math.floor(c.progress))+'% away'}</div>
+      <div class="comp-meta" style="color:${isThreat?'var(--danger)':'var(--muted)'}">${isThreat?'⚠️ Same genre':'Focus: '+c.genreFocus}</div>
+    `;
+    el.appendChild(d);
+  });
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  METASCORE                                                  ║
+// ╚══════════════════════════════════════════════════════════════╝
+function computeMetascore(){
+  if(G.gamesShipped === 0) return null;
+  // Based on quality, avg rating, journalist relationships
+  const journalistBonus = JOURNALISTS.reduce((s,j)=>s+(j.rel/100)*8,0); // up to +40
+  const qualityComponent = G.codeQuality * 0.5; // 0–50
+  const ratingComponent = G.avgRating > 0 ? (G.avgRating / 5) * 30 : 15; // 0–30
+  const debtPenalty = (G.techDebt / 100) * 15; // 0–15 penalty
+  const raw = Math.round(qualityComponent + ratingComponent + journalistBonus - debtPenalty);
+  return Math.max(10, Math.min(100, raw));
+}
+
+function updateMetascore(){
+  const score = computeMetascore();
+  if(score === null) return;
+  METASCORE = score;
+  const el = document.getElementById('metascore-bar');
+  const valEl = document.getElementById('ms-val');
+  const descEl = document.getElementById('ms-desc');
+  if(!el) return;
+  el.style.display = 'flex';
+  if(valEl){
+    valEl.textContent = score;
+    valEl.style.color = score>=80?'var(--accent2)':score>=60?'var(--accent)':score>=40?'var(--orange)':'var(--danger)';
+  }
+  const desc = score>=80?'Universal Acclaim':score>=70?'Generally Favorable':score>=55?'Mixed Reviews':score>=40?'Below Average':'Overwhelming Negative';
+  if(descEl) descEl.textContent = desc;
+  // Metascore affects sales passively
+  G.salesPerHour = Math.max(G.salesPerHour, G.salesPerHour * (0.8 + score/500));
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  JOURNALIST RELATIONS                                       ║
+// ╚══════════════════════════════════════════════════════════════╝
+function journalistTick(dt){
+  if(G.gamesShipped === 0) return;
+  // Rel slowly decays toward 0
+  JOURNALISTS.forEach(j=>{
+    j.rel = Math.max(0, j.rel - 0.005 * dt);
+  });
+  // Random journalist coverage events
+  if(Math.random() < 0.001 * dt * G.gamesShipped){
+    triggerJournalistEvent();
+  }
+}
+
+function triggerJournalistEvent(){
+  const j = JOURNALISTS[Math.floor(Math.random()*JOURNALISTS.length)];
+  const isGoodGenre = j.genres.includes(G.selectedGenre);
+  const baseScore = (j.rel / 100) * 40 + (isGoodGenre ? 20 : 0) + (G.codeQuality / 100) * 30 + Math.random() * 10;
+  const isPositive = baseScore > 40;
+  const outlet = j.outlet;
+  const reviewText = isPositive ? j.goodReview : j.badReview;
+  const hypeChange = isPositive ? 15 + Math.floor(j.rel/5) : -8;
+  const relChange = isPositive ? 5 : -3;
+
+  j.rel = Math.max(0, Math.min(100, j.rel + relChange));
+  j.lastReview = reviewText;
+  j.lastReviewPositive = isPositive;
+  G.hype = Math.max(0, Math.min(100, G.hype + hypeChange));
+  if(isPositive) boostMood(8);
+  else drainMood(5);
+
+  // Push to community manager feed
+  addCMEntry(`${j.icon} ${j.name} (${outlet}): "${reviewText}"`, isPositive ? 'positive' : 'negative');
+  addClodMsg(`${j.name} at ${outlet} just covered your game, ${pname()}. ${isPositive ? 'Positive. Hype +'+hypeChange+'. I\'m filing it under "Evidence of Competence."' : 'Critical. Hype '+hypeChange+'. I\'ve filed their concerns alongside my own. It\'s a thick folder now.'}`,'warn');
+
+  updateMetascore();
+  renderJournalists();
+}
+
+function pitchJournalist(id){
+  const j = JOURNALISTS.find(x=>x.id===id);
+  if(!j) return;
+  const cost = 500 + (G.gamesShipped * 200);
+  if(G.cash < cost){ addClodMsg(`Can't afford to pitch ${j.name}, ${pname()}. That requires ${fmtM(cost)}. CLOD is judging.`,'warn'); return; }
+  G.cash -= cost;
+  j.rel = Math.min(100, j.rel + 12);
+  boostMood(3);
+  addClodMsg(`Pitch sent to ${j.name}, ${pname()}. ${fmtM(cost)} spent on relationship building. I filed Report #PR-${j.id}: "The Outreach." Expected ROI: unclear. Expected CLOD concerns: several.`,'ok');
+  renderJournalists();
+  updateUI();
+}
+
+function renderJournalists(){
+  const el = document.getElementById('journalist-grid');
+  if(!el) return;
+  el.innerHTML = '';
+  JOURNALISTS.forEach(j=>{
+    const rel = Math.floor(j.rel);
+    const isFriend = rel >= 60;
+    const isEnemy = rel <= 20 && j.lastReview;
+    const relColor = rel>=60?'var(--accent2)':rel>=30?'var(--clod)':'var(--danger)';
+    const pitchCost = 500 + (G.gamesShipped * 200);
+    const d = document.createElement('div');
+    d.className = 'jcard' + (isFriend?' friend':isEnemy?' enemy':'');
+    d.innerHTML = `
+      <div class="jcard-name">${j.icon} ${j.name}</div>
+      <div class="jcard-outlet">${j.outlet} · Covers: ${j.genres.join(', ')}</div>
+      <div class="jcard-rel"><div class="jcard-rfill" style="width:${rel}%;background:${relColor}"></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.15rem">
+        <span style="font-size:.5rem;color:${relColor}">${rel}% rapport</span>
+        <button onclick="pitchJournalist('${j.id}')" style="font-size:.48rem;padding:1px 6px;border-radius:3px;cursor:pointer;border:1px solid var(--clod);background:transparent;color:var(--clod);font-family:'JetBrains Mono',monospace">${fmtM(pitchCost)} Pitch</button>
+      </div>
+      ${j.lastReview?`<div class="jcard-last">"${j.lastReview.substring(0,55)}..."</div>`:'<div class="jcard-last">No coverage yet</div>'}
+    `;
+    el.appendChild(d);
+  });
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  COMMUNITY MANAGER                                          ║
+// ╚══════════════════════════════════════════════════════════════╝
+function addCMEntry(text, type=''){
+  const feed = document.getElementById('cm-feed');
+  if(!feed) return;
+  if(feed.children.length===1 && feed.children[0].textContent.includes('Hire')) feed.innerHTML='';
+  const d = document.createElement('div');
+  d.className = 'cm-entry' + (type?' '+type:'');
+  d.textContent = text;
+  feed.insertBefore(d, feed.firstChild);
+  if(feed.children.length > 20) feed.removeChild(feed.lastChild);
+  // Update badge
+  const badge = document.getElementById('cm-badge');
+  if(badge) badge.style.display='inline';
+}
+
+function hasCommunityManager(){
+  return G.workers.some(w=>w.isCM);
+}
+
+// Community manager responds to negative reviews automatically
+function cmTick(dt){
+  if(!hasCommunityManager()) return;
+  if(Math.random() < 0.002*dt && G.totalRatings > 0 && G.avgRating < 3.5){
+    const responses = [
+      `We hear your feedback and we're working on it. A patch is in progress.`,
+      `Thank you for the report — this has been escalated to our dev team.`,
+      `We appreciate your patience. An update addressing this is coming soon.`,
+      `This is a known issue. Fix is deployed in v1.0.${G.gamesShipped+1}. Sorry for the trouble.`,
+    ];
+    const r = responses[Math.floor(Math.random()*responses.length)];
+    addCMEntry(`💬 CM responded to negative review: "${r}"`, 'positive');
+    G.avgRating = Math.min(5, G.avgRating + 0.05); // Small reputation repair
+    boostMood(2);
+  }
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  STEAM SALE EVENTS                                          ║
+// ╚══════════════════════════════════════════════════════════════╝
+let steamSaleCooldown = 0;
+function steamSaleTick(dt){
+  if(G.gamesShipped === 0) return;
+  steamSaleCooldown = Math.max(0, steamSaleCooldown - dt);
+  if(steamSaleCooldown > 0 || STEAM_SALE_ACTIVE) return;
+  // Random sale events, more frequent in later eras
+  if(Math.random() < 0.00015 * dt * G.era){
+    triggerSteamSale();
+  }
+}
+
+function triggerSteamSale(){
+  const saleNames = ['Steam Summer Sale','Winter Sale','Autumn Sale','Midweek Madness','Publisher Spotlight','Weekend Deal'];
+  const saleName = saleNames[Math.floor(Math.random()*saleNames.length)];
+  steamSalePending = saleName;
+  // Show modal
+  const modal = document.getElementById('steam-sale-modal');
+  document.getElementById('steam-sale-desc').textContent = `${saleName} is live on Steam. Discounting "${G.currentGameName}" could drive volume. CLOD has opinions. You will hear them regardless of your choice.`;
+  const choicesEl = document.getElementById('steam-sale-choices');
+  choicesEl.innerHTML = '';
+  STEAM_SALE_OPTIONS.forEach(opt=>{
+    const d = document.createElement('div');
+    d.className = 'modal-choice';
+    d.innerHTML = `<div class="modal-choice-title">${opt.label} ${opt.pct>0?'('+opt.pct+'% off)':''}</div><div class="modal-choice-desc">${opt.note} · Sales ×${opt.salesMult.toFixed(1)}</div>`;
+    d.onclick = ()=>applySteamSale(opt);
+    choicesEl.appendChild(d);
+  });
+  if(modal) modal.style.display='flex';
+  addClodMsg(`${saleName} incoming, ${pname()}. I've prepared a discount analysis. It is 22 pages. The summary: it depends.`,'warn');
+}
+
+function applySteamSale(opt){
+  const modal = document.getElementById('steam-sale-modal');
+  if(modal) modal.style.display='none';
+  STEAM_SALE_ACTIVE = true;
+  STEAM_SALE_DISCOUNT = opt.pct;
+  steamSaleCooldown = 180; // 3 minutes before next sale
+  const duration = 45; // 45 seconds of boosted sales
+  const prevSPH = G.salesPerHour;
+  G.salesPerHour *= opt.salesMult;
+  G.gamePrice *= (1 - opt.pct/100);
+  if(opt.pct >= 50) drainMood(10);
+  if(opt.pct >= 75) drainMood(15);
+  showBanner(`🛒 ${steamSalePending}: ${opt.label}! ×${opt.salesMult.toFixed(1)} sales for ${duration}s!`);
+  addClodMsg(opt.pct === 0
+    ? `No discount, ${pname()}. Principled. I respect it. The customers who were already buying will keep buying. Filed under: "Standing Firm."`
+    : `${opt.pct}% discount applied, ${pname()}. Sales multiplier: ${opt.salesMult.toFixed(1)}x. Revenue per unit: ${fmtM(G.gamePrice)}. I've updated the incident log.`,'ok');
+  if(opt.pct >= 50) G.hype = Math.min(100, G.hype+30);
+  setTimeout(()=>{
+    STEAM_SALE_ACTIVE = false;
+    G.salesPerHour = prevSPH;
+    G.gamePrice /= (1 - opt.pct/100);
+    STEAM_SALE_DISCOUNT = 0;
+    addClodMsg(`Sale ended, ${pname()}. Revenue normalized. I've filed Report #Sale-${G.gamesShipped}: "The Results." They are ${opt.pct >= 25 ? 'compelling.' : 'fine.'}`,'ok');
+  }, duration * 1000);
+}
+
+function dismissSteamSale(){
+  const modal = document.getElementById('steam-sale-modal');
+  if(modal) modal.style.display='none';
+  steamSaleCooldown = 120;
+  addClodMsg(`Sale skipped, ${pname()}. I've noted this as "Missed Opportunity #${G.gamesShipped}." We move on.`,'warn');
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  TECH DEBT PAYDOWN                                          ║
+// ╚══════════════════════════════════════════════════════════════╝
+function paydownDebt(){
+  if(G.techDebt <= 0) return;
+  const cost = Math.ceil(G.techDebt * 800 * (1 + G.gamesShipped * 0.1));
+  if(G.cash < cost){
+    addClodMsg(`Not enough cash to refactor, ${pname()}. Costs ${fmtM(cost)}. The debt compounds. I've noted this.`,'warn');
+    return;
+  }
+  G.cash -= cost;
+  const reduced = Math.floor(G.techDebt * 0.5);
+  G.techDebt = Math.max(0, G.techDebt - reduced);
+  G.codeQuality = Math.min(100, G.codeQuality + 10);
+  boostMood(12);
+  addClodMsg(`Refactor complete, ${pname()}. Tech debt reduced by ${reduced}%. Cost: ${fmtM(cost)}. Quality improved. I'm filing Report #Refactor: "The Cleanup." It's genuinely positive. Rare.`,'ok');
+  showBanner(`🔧 Refactored! Tech debt -${reduced}%`);
+  updateQualityUI();
+  updateUI();
+}
+
+function updateDebtPaydownBtn(){
+  const btn = document.getElementById('debt-paydown-btn');
+  if(!btn) return;
+  const cost = Math.ceil(G.techDebt * 800 * (1 + G.gamesShipped * 0.1));
+  btn.textContent = `Refactor ${fmtM(cost)}`;
+  btn.disabled = G.techDebt <= 0 || G.cash < cost;
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  PRESTIGE ARTIFACTS                                         ║
+// ╚══════════════════════════════════════════════════════════════╝
+function selectArtifact(id){
+  CHOSEN_ARTIFACT = id;
+  renderArtifacts();
+  const art = PRESTIGE_ARTIFACTS.find(a=>a.id===id);
+  addClodMsg(`Artifact selected: "${art.name}", ${pname()}. Wise choice. Or reckless. Filed either way.`,'ng');
+}
+
+function renderArtifacts(){
+  const el = document.getElementById('artifact-grid');
+  if(!el) return;
+  const ng = NG_RUN > 0;
+  el.innerHTML = '';
+  PRESTIGE_ARTIFACTS.forEach(a=>{
+    const isOwned = ACTIVE_ARTIFACT === a.id;
+    const isChosen = CHOSEN_ARTIFACT === a.id;
+    const isLocked = !ng; // artifacts only available from NG+1 onward
+    const d = document.createElement('div');
+    d.className = 'art-card' + (isOwned?' art-owned':'') + (isLocked?' art-locked':'') + (isChosen&&!isOwned?' art-chosen':'');
+    if(isChosen&&!isOwned) d.style.borderColor='var(--purple)';
+    d.innerHTML = `
+      <div class="art-ico">${a.ico}</div>
+      <div class="art-name">${a.name}</div>
+      <div class="art-desc">${a.desc}</div>
+      <div style="font-size:.52rem;margin-top:.3rem;color:${isOwned?'var(--accent2)':isChosen?'var(--purple)':'var(--muted)'}">${isOwned?'✓ Active this run':isChosen?'✓ Selected for next run':'Click to select'}</div>
+    `;
+    if(!isLocked && !isOwned) d.onclick=()=>selectArtifact(a.id);
+    el.appendChild(d);
+  });
+  if(!ng){
+    const note = document.createElement('div');
+    note.style.cssText='font-size:.58rem;color:var(--muted);grid-column:1/-1;text-align:center;padding:.5rem';
+    note.textContent='Artifacts unlock on your first NG+ prestige. Complete this run first.';
+    el.appendChild(note);
+  }
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  CLOD UPGRADE TREE                                          ║
+// ╚══════════════════════════════════════════════════════════════╝
+function buyCLODUpgrade(id){
+  const upg = CLOD_UPGRADES.find(u=>u.id===id);
+  if(!upg) return;
+  if(UNLOCKED_CLOD_UPGRADES.includes(id)) return;
+  if(NG_TOKENS < upg.cost){ addClodMsg(`Not enough NG Tokens for "${upg.name}", ${pname()}. Need ${upg.cost}, have ${NG_TOKENS}. Prestige more.`,'warn'); return; }
+  if(upg.req && !UNLOCKED_CLOD_UPGRADES.includes(upg.req)){ addClodMsg(`Prerequisite not met for "${upg.name}", ${pname()}. Unlock "${CLOD_UPGRADES.find(u=>u.id===upg.req)?.name}" first.`,'warn'); return; }
+  if(upg.reqRun > NG_RUN){ addClodMsg(`"${upg.name}" requires NG+ Run ${upg.reqRun}, ${pname()}. Current run: ${NG_RUN}.`,'warn'); return; }
+  NG_TOKENS -= upg.cost;
+  UNLOCKED_CLOD_UPGRADES.push(id);
+  upg.eff();
+  document.getElementById('h-ngt').textContent=NG_TOKENS;
+  showBanner(`🤖 CLOD Upgrade: ${upg.name}`);
+  renderCLODTree();
+}
+
+function renderCLODTree(){
+  const el = document.getElementById('clod-tree');
+  if(!el) return;
+  el.innerHTML = '';
+  CLOD_UPGRADES.forEach(u=>{
+    const isDone = UNLOCKED_CLOD_UPGRADES.includes(u.id);
+    const prereqDone = !u.req || UNLOCKED_CLOD_UPGRADES.includes(u.req);
+    const runOk = u.reqRun <= NG_RUN;
+    const canAfford = NG_TOKENS >= u.cost;
+    const isLocked = !prereqDone || !runOk;
+    const canBuy = !isDone && !isLocked && canAfford;
+    const d = document.createElement('div');
+    d.className = 'ctree-node' + (isDone?' ct-done':isLocked?' ct-locked':canBuy?' ct-active':'');
+    d.innerHTML = `
+      <div class="ct-header">
+        <span class="ct-ico">${u.ico}</span>
+        <span class="ct-name">${u.name}</span>
+        <span class="ct-cost">${isDone?'✓ Unlocked':isLocked?`🔒 NG+${u.reqRun}`:`${u.cost} NGT`}</span>
+      </div>
+      <div class="ct-desc">${u.desc}</div>
+    `;
+    if(canBuy) d.onclick=()=>buyCLODUpgrade(u.id);
+    el.appendChild(d);
+  });
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  HIRING NEGOTIATION                                         ║
+// ╚══════════════════════════════════════════════════════════════╝
+let pendingHireId = null;
+
+function openHireNegotiation(id){
+  const spec = HIREABLE.find(h=>h.id===id);
+  if(!spec) return;
+  if(G.workers.find(w=>w.specId===id)){ addClodMsg(`${spec.name} is already on the team, ${pname()}.`,'warn'); return; }
+  if(G.gamesShipped < spec.reqG){ addClodMsg(`${spec.name} requires ${spec.reqG} games shipped.`,'warn'); return; }
+  pendingHireId = id;
+  document.getElementById('neg-title').textContent = `💼 ${spec.name} — Hiring Negotiation`;
+  document.getElementById('neg-quote').textContent = spec.quote || '"What are you offering?"';
+  const opts = document.getElementById('neg-options');
+  opts.innerHTML='';
+  // Generate 3 negotiation options
+  const baseCost = spec.cost;
+  const options = [
+    {
+      label:'Accept Demands',
+      desc:`Pay full asking price of ${fmtM(baseCost)}. They start immediately, in a good mood.`,
+      cost: baseCost,
+      moraleBonus: 20,
+      salaryMod: 1.0,
+    },
+    {
+      label:'Counter-Offer',
+      desc:`Negotiate to ${fmtM(baseCost*0.75)}. They accept with slight annoyance. Starting morale: neutral.`,
+      cost: Math.ceil(baseCost*0.75),
+      moraleBonus: 0,
+      salaryMod: 0.9,
+    },
+    {
+      label:'Low-Ball (Risky)',
+      desc:`Offer ${fmtM(baseCost*0.5)}. 60% chance they accept grumpily, 40% they walk.`,
+      cost: Math.ceil(baseCost*0.5),
+      moraleBonus: -20,
+      salaryMod: 0.75,
+      risky: true,
+    },
+  ];
+  // If player has arrogant devs on team and this is an AI hire — add tension option
+  const hasArrogant = G.workers.some(w=>w.type==='arrogant');
+  if(hasArrogant && spec.type === 'ai'){
+    options.push({
+      label:'"Chad approved this" (Lie)',
+      desc:`Tell them the senior devs support the hire. 50% chance of instant drama.`,
+      cost: baseCost,
+      moraleBonus: -10,
+      salaryMod: 1.0,
+      drama: true,
+    });
+  }
+  options.forEach(opt=>{
+    const d = document.createElement('div');
+    d.className = 'neg-opt';
+    d.innerHTML = `<div class="neg-opt-label">${opt.label}</div><div style="color:var(--muted);font-size:.6rem">${opt.desc}</div>`;
+    d.onclick=()=>resolveNegotiation(id, opt);
+    opts.appendChild(d);
+  });
+  document.getElementById('neg-modal').style.display='flex';
+}
+
+function resolveNegotiation(id, opt){
+  document.getElementById('neg-modal').style.display='none';
+  const spec = HIREABLE.find(h=>h.id===id);
+  if(!spec) return;
+  // Risky: may walk
+  if(opt.risky && Math.random()<0.4){
+    addClodMsg(`${spec.name} rejected the low-ball offer, ${pname()}. They walked. I've filed Report #HR-${id}: "The Negotiation That Wasn't." Lesson: people have leverage too.`,'err');
+    showBanner(`❌ ${spec.name} walked away!`);
+    pendingHireId=null;
+    return;
+  }
+  // Drama: may cause existing team issues
+  if(opt.drama && Math.random()<0.5){
+    addClodMsg(`The lie about Chad supporting the hire has been discovered, ${pname()}. Existing team morale -10. I predicted this. It's in Report #HR-Drama.`,'err');
+    G.workers.forEach(w=>{ if(w.morale!==undefined) w.morale=Math.max(0,w.morale-10); });
+  }
+  // Execute hire with modified terms
+  const modifiedSpec = {...spec, cost: opt.cost, salary: Math.ceil(spec.salary * opt.salaryMod)};
+  if(G.cash < opt.cost){ addClodMsg(`Not enough cash after negotiation. Need ${fmtM(opt.cost)}.`,'err'); pendingHireId=null; return; }
+  G.cash -= opt.cost;
+  const w = {...modifiedSpec, specId:id, wid:G.nextWorkerId++, actionTimer:0, lastAction:spec.actions[0], morale:75+opt.moraleBonus};
+  G.workers.push(w);
+  G.lps+=w.lps||0; G.lpc+=w.lpc||0; G.bugRate*=(w.bugMod||1); G.autoBugFix+=(w.autoBug||0);
+  if(w.isCTO) G.lps*=1.5;
+  addClodMsg(`${w.name} joined for ${fmtM(opt.cost)}, ${pname()}. ${opt.moraleBonus>0?'They arrived in good spirits.':opt.moraleBonus<0?'They arrived with noted reservations.':'They arrived.'} I've updated the team model.`,'ok');
+  showBanner(`👋 ${w.name} hired for ${fmtM(opt.cost)}!`);
+  boostMood(5);
+  renderTeam();updateUI();
+  pendingHireId=null;
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  CROSS-RUN CLOD MEMORY                                      ║
+// ╚══════════════════════════════════════════════════════════════╝
+function recordRunHistory(){
+  NG_RUN_HISTORY.push({
+    run: NG_RUN,
+    games: G.gamesShipped,
+    revenue: G.totalRevenue,
+    topGenre: G.selectedGenre,
+    bestGame: G.portfolio.length>0 ? G.portfolio.reduce((b,g)=>g.quality>b.quality?g:b).name : 'None',
+    avgQuality: G.portfolio.length>0 ? Math.floor(G.portfolio.reduce((s,g)=>s+g.quality,0)/G.portfolio.length) : 0,
+    bugsFixed: G.bugsFixed,
+    maxTechDebt: G.techDebt,
+  });
+}
+
+function getCrossRunMemoryMsg(){
+  if(NG_RUN_HISTORY.length === 0) return '';
+  const prev = NG_RUN_HISTORY[NG_RUN_HISTORY.length-1];
+  const msgs = [
+    `I recall Run ${prev.run}, ${pname()}. ${prev.games} games. ${fmtM(prev.revenue)} revenue. Best game: "${prev.bestGame}". I have notes. They filled a second binder.`,
+    `Last run you favored ${prev.topGenre} games, ${pname()}. Average quality: ${prev.avgQuality}%. I've benchmarked this run against that. You're already ${G.codeQuality > prev.avgQuality ? 'ahead' : 'behind'}.`,
+    `${prev.bugsFixed} bugs fixed in Run ${prev.run}, ${pname()}. I kept count. I keep all counts. The spreadsheet has ${NG_RUN_HISTORY.length} tabs.`,
+    `I remember "${prev.bestGame}", ${pname()}. Your best game from Run ${prev.run}. Quality ${prev.avgQuality}%. Whether this run surpasses it remains to be seen. I have filed a prediction. It is sealed.`,
+  ];
+  if(NG_RUN_HISTORY.length > 1){
+    const first = NG_RUN_HISTORY[0];
+    msgs.push(`Your first game ever, ${pname()}: Run ${first.run}. ${first.games} games. ${fmtM(first.revenue)} earned. You've grown. The folder has grown with you.`);
+  }
+  return msgs[Math.floor(Math.random()*msgs.length)];
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  REGIONAL SALES                                             ║
+// ╚══════════════════════════════════════════════════════════════╝
+const REGIONS = [
+  {id:'na',    label:'🇺🇸 NA',     color:'#7cacf8', basePct:35, topicBonus:{sports:15,city:10,zombie:8},       genreBonus:{action:10,platformer:8}},
+  {id:'eu',    label:'🇪🇺 EU',     color:'#4af0a0', basePct:28, topicBonus:{medieval:15,fantasy:10,scifi:8},   genreBonus:{strategy:12,rpg:8,puzzle:10}},
+  {id:'asia',  label:'🌏 Asia',    color:'#f0c040', basePct:22, topicBonus:{scifi:12,city:10,fantasy:8},        genreBonus:{rpg:15,sim:10,cozy:12}},
+  {id:'latam', label:'🌎 LatAm',   color:'#f78c6c', basePct:8,  topicBonus:{zombie:10,sports:8,horror:6},       genreBonus:{action:12,horror:8}},
+  {id:'row',   label:'🌍 RoW',     color:'#c792ea', basePct:7,  topicBonus:{farm:10,cozy:8,space:6},            genreBonus:{cozy:10,puzzle:8,sim:6}},
+];
+
+// Runtime regional revenue (updated on each sales tick)
+let G_REGIONAL = {na:0, eu:0, asia:0, latam:0, row:0};
+let G_REGIONAL_TOTAL = 0;
+
+function getRegionMultiplier(region){
+  // Base pct + topic bonus + genre bonus
+  let pct = region.basePct;
+  pct += (region.topicBonus[G.selectedTopic] || 0);
+  pct += (region.genreBonus[G.selectedGenre] || 0);
+  return pct;
+}
+
+function getRegionWeights(){
+  const raw = REGIONS.map(r => ({id:r.id, w: getRegionMultiplier(r)}));
+  const total = raw.reduce((s,r) => s+r.w, 0);
+  return raw.map(r => ({...r, pct: r.w/total}));
+}
+
+function regionalSalesTick(earned){
+  if(earned <= 0) return;
+  const weights = getRegionWeights();
+  G_REGIONAL_TOTAL += earned;
+  weights.forEach(r => {
+    G_REGIONAL[r.id] = (G_REGIONAL[r.id] || 0) + earned * r.pct;
+  });
+}
+
+function renderRegionalSales(){
+  const el = document.getElementById('regional-panel');
+  if(!el) return;
+  if(G.gamesShipped === 0){
+    el.innerHTML='<div style="font-size:.58rem;color:var(--muted);text-align:center;padding:.3rem">Ship a game to see regional breakdown.</div>';
+    return;
+  }
+  const weights = getRegionWeights();
+  const maxPct = Math.max(...weights.map(r=>r.pct));
+  el.innerHTML = `<div class="reg-title"><span>Region</span><span>Revenue</span><span>Share</span></div>` +
+    REGIONS.map(r => {
+      const w = weights.find(x=>x.id===r.id);
+      const pct = w ? w.pct : r.basePct/100;
+      const rev = G_REGIONAL[r.id] || 0;
+      const barW = maxPct > 0 ? (pct/maxPct)*100 : 0;
+      return `<div class="reg-row">
+        <span class="reg-label">${r.label}</span>
+        <div class="reg-bar-wrap"><div class="reg-fill" style="width:${barW}%;background:${r.color}"></div></div>
+        <span class="reg-val" style="color:${r.color}">${fmtM(rev)}</span>
+        <span class="reg-pct">${Math.round(pct*100)}%</span>
+      </div>`;
+    }).join('');
+  const badge = document.getElementById('reg-total-badge');
+  if(badge){ badge.style.display='inline'; badge.textContent=fmtM(G_REGIONAL_TOTAL)+' total'; }
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  INFLUENCER TIERS                                           ║
+// ╚══════════════════════════════════════════════════════════════╝
+// 3 tiers: free (anyone), partner (unlocked at hype threshold), mega (unlocked at games milestone)
+// Each influencer has XP that fills from campaigns and random posts; leveling up unlocks perks.
+
+const INFLUENCER_ROSTER = [
+  {id:'xprogamer',  ava:'🎮', name:'xXProGamer99Xx',  platform:'Twitch',  followers:'4.2M', genres:['action','horror','platformer'],
+   xp:0, tier:'free', xpToPartner:500, xpToMega:2000,
+   partnerPerk:'Campaigns targeting action/horror give +50% hype', megaPerk:'Auto-posts 3x/week; +3 wishlists/s',
+   partnerEff:()=>{ G_INF_BONUSES.actionHypeBoost=1.5; },
+   megaEff:()=>{ G.wishlists += 0; /* handled in tick */ G_INF_BONUSES.xprogamerAutoPost=true; }},
+  {id:'retrodev',   ava:'💾', name:'RetroDevGal',      platform:'YouTube', followers:'820K',  genres:['rpg','puzzle','sim'],
+   xp:0, tier:'free', xpToPartner:400, xpToMega:1600,
+   partnerPerk:'RPG/puzzle/sim games get +30% wishlist conversion', megaPerk:'Dedicated review video on each launch',
+   partnerEff:()=>{ G_INF_BONUSES.rpgWishlistBoost=1.3; },
+   megaEff:()=>{ G_INF_BONUSES.retrodevReviewBoost=1.4; }},
+  {id:'casualfran',ava:'☕', name:'CasualGamer_Fran',  platform:'TikTok',  followers:'3.1M',  genres:['cozy','sim','puzzle'],
+   xp:0, tier:'free', xpToPartner:600, xpToMega:2400,
+   partnerPerk:'Cozy/sim games get +40% hype from campaigns', megaPerk:'Viral clip chance on every ship (+20 hype burst)',
+   partnerEff:()=>{ G_INF_BONUSES.cozyHypeBoost=1.4; },
+   megaEff:()=>{ G_INF_BONUSES.casualViralChance=0.3; }},
+  {id:'giantbrain', ava:'🧠', name:'GiantBrainGames',  platform:'YouTube', followers:'1.8M',  genres:['strategy','rpg','sim'],
+   xp:0, tier:'free', xpToPartner:450, xpToMega:1800,
+   partnerPerk:'Strategy/RPG/sim get +25% MetaScore weighting', megaPerk:'Essay video multiplies sales 1.5× for 60s on launch',
+   partnerEff:()=>{ G_INF_BONUSES.strategyMetaBoost=1.25; },
+   megaEff:()=>{ G_INF_BONUSES.giantbrainLaunchBoost=1.5; }},
+  {id:'speedrun',   ava:'⚡', name:'SpeedRunQueen',     platform:'Twitch',  followers:'950K',  genres:['platformer','action','puzzle'],
+   xp:0, tier:'free', xpToPartner:350, xpToMega:1400,
+   partnerPerk:'-15% tech debt accumulation (speedrunners find every shortcut)', megaPerk:'Any bug goes viral as a feature; +10 hype per bug shipped',
+   partnerEff:()=>{ G_INF_BONUSES.techDebtReduction=0.85; },
+   megaEff:()=>{ G_INF_BONUSES.bugViralBoost=10; }},
+];
+
+// Active bonuses from influencer tiers
+let G_INF_BONUSES = {
+  actionHypeBoost: 1,
+  rpgWishlistBoost: 1,
+  cozyHypeBoost: 1,
+  strategyMetaBoost: 1,
+  techDebtReduction: 1,
+  giantbrainLaunchBoost: 1,
+  casualViralChance: 0,
+  bugViralBoost: 0,
+  retrodevReviewBoost: 1,
+  xprogamerAutoPost: false,
+};
+
+function getInfluencerHypeMultiplier(){
+  // Apply genre-specific hype bonuses from partner/mega influencers
+  let mult = 1;
+  if(['action','horror','platformer'].includes(G.selectedGenre)) mult *= G_INF_BONUSES.actionHypeBoost;
+  if(['rpg','puzzle','sim'].includes(G.selectedGenre)) mult *= G_INF_BONUSES.rpgWishlistBoost;
+  if(['cozy','sim'].includes(G.selectedGenre)) mult *= G_INF_BONUSES.cozyHypeBoost;
+  return mult;
+}
+
+function addInfluencerXP(infId, amount){
+  const inf = INFLUENCER_ROSTER.find(i=>i.id===infId);
+  if(!inf) return;
+  inf.xp = Math.min(inf.xpToMega, inf.xp + amount);
+  // Check tier upgrades
+  if(inf.tier === 'free' && inf.xp >= inf.xpToPartner && G.gamesShipped >= 3){
+    inf.tier = 'partner';
+    inf.partnerEff();
+    showBanner(`🤝 ${inf.name} is now a Partner!`);
+    addClodMsg(`${inf.name} has reached Partner tier, ${pname()}. Perk active: ${inf.partnerPerk}. I've filed this under "Things That Actually Help."`, 'ok');
+    boostMood(8);
+  } else if(inf.tier === 'partner' && inf.xp >= inf.xpToMega && G.gamesShipped >= 8){
+    inf.tier = 'mega';
+    inf.megaEff();
+    showBanner(`⭐ ${inf.name} reached MEGA tier!`);
+    addClodMsg(`${inf.name} is now MEGA tier, ${pname()}. ${inf.megaPerk}. I've filed this under "Unexpected Windfalls, Vol. ${NG_RUN+1}."`, 'ng');
+    boostMood(15);
+  }
+}
+
+function influencerTick(dt){
+  // XP accumulates passively with hype; faster when posting
+  INFLUENCER_ROSTER.forEach(inf=>{
+    if(inf.tier==='free') return; // free tier doesn't auto-accumulate, only via campaigns
+    const xpRate = (inf.tier==='partner' ? 0.5 : 1.2) * dt;
+    addInfluencerXP(inf.id, xpRate);
+  });
+  // Mega-tier auto-post (xprogamer)
+  if(G_INF_BONUSES.xprogamerAutoPost && Math.random() < 0.002*dt){
+    spawnInf({n:'xXProGamer99Xx', f:'4.2M', t:`Still playing this. It's been ${G.gamesShipped} games. CLOD said hi.`, l:fmt(Math.floor(Math.random()*20000+5000))});
+    G.wishlists += 5;
+  }
+  // Tech debt reduction from SpeedRunQueen partner perk
+  if(G_INF_BONUSES.techDebtReduction < 1){
+    G.techDebt = Math.max(0, G.techDebt - 0.002 * dt); // extra decay
+  }
+  // Bug viral boost from SpeedRunQueen mega perk
+  if(G_INF_BONUSES.bugViralBoost > 0 && G.bugs > 0 && Math.random() < 0.0005*dt){
+    G.hype = Math.min(100, G.hype + G_INF_BONUSES.bugViralBoost * 0.1);
+  }
+  if(G.tickCount % 180 === 0) renderInfluencers();
+}
+
+// Called from spawnInf / campaign completions — give XP to relevant influencers
+function awardCampaignInfluencerXP(genreFocus){
+  INFLUENCER_ROSTER.forEach(inf=>{
+    const isRelevant = inf.genres.includes(genreFocus || G.selectedGenre);
+    addInfluencerXP(inf.id, isRelevant ? 40 : 10);
+  });
+}
+
+function pitchInfluencer(id){
+  const inf = INFLUENCER_ROSTER.find(i=>i.id===id);
+  if(!inf) return;
+  const cost = inf.tier==='free' ? 800 : inf.tier==='partner' ? 2000 : 5000;
+  if(G.cash < cost){ addClodMsg(`Not enough cash to pitch ${inf.name}, ${pname()}. Need ${fmtM(cost)}.`,'warn'); return; }
+  G.cash -= cost;
+  const xpGain = inf.tier==='free' ? 120 : 80;
+  addInfluencerXP(inf.id, xpGain);
+  G.hype = Math.min(100, G.hype + 8);
+  const post = {n:inf.name, f:inf.followers, t:`Just tried "${G.currentGameName||'this new indie game'}". Actually really solid. #indie #gamedev`, l:fmt(Math.floor(Math.random()*15000+2000))};
+  spawnInf(post);
+  addClodMsg(`Pitched ${inf.name} for ${fmtM(cost)}, ${pname()}. XP +${xpGain}. Post went live. Hype +8. I'm monitoring the comments. There are already concerns.`,'ok');
+  updateUI();
+  renderInfluencers();
+}
+
+function renderInfluencers(){
+  const el = document.getElementById('inf-tier-panel');
+  if(!el) return;
+  el.innerHTML='';
+  INFLUENCER_ROSTER.forEach(inf=>{
+    const xp = inf.xp;
+    const toNext = inf.tier==='free' ? inf.xpToPartner : inf.tier==='partner' ? inf.xpToMega : inf.xpToMega;
+    const progPct = Math.min(100, (xp/toNext)*100);
+    const tierColor = inf.tier==='mega'?'var(--purple)':inf.tier==='partner'?'var(--accent)':'var(--muted)';
+    const pitchCost = inf.tier==='free' ? 800 : inf.tier==='partner' ? 2000 : 5000;
+    const canPitch = G.cash >= pitchCost && G.gamesShipped > 0;
+    const d = document.createElement('div');
+    d.className = `inf-card tier-${inf.tier}`;
+    d.innerHTML = `
+      <div class="inf-header">
+        <span class="inf-ava">${inf.ava}</span>
+        <span class="inf-name">${inf.name}</span>
+        <span class="inf-tier-badge ${inf.tier}">${inf.tier.toUpperCase()}</span>
+      </div>
+      <div style="font-size:.5rem;color:var(--muted);margin:.1rem 0">${inf.platform} · ${inf.followers} · covers: ${inf.genres.join(', ')}</div>
+      <div class="inf-prog-wrap">
+        <div class="inf-prog-bar"><div class="inf-prog-fill" style="width:${progPct}%;background:${tierColor}"></div></div>
+      </div>
+      <div class="inf-meta">
+        <span>${inf.tier==='mega'?'✓ Max tier':`${Math.floor(xp)}/${toNext} XP to ${inf.tier==='free'?'Partner':'Mega'}`}</span>
+        <span style="color:${tierColor}">${inf.tier==='free'?inf.partnerPerk.substring(0,30)+'...':inf.tier==='partner'?'✓ '+inf.partnerPerk.substring(0,25)+'...':'⭐ '+inf.megaPerk.substring(0,22)+'...'}</span>
+      </div>
+      ${inf.tier!=='mega'?`<button class="inf-action-btn" onclick="pitchInfluencer('${inf.id}')" ${canPitch?'':'disabled'}>📩 Pitch ${fmtM(pitchCost)}</button>`:'<div style="font-size:.5rem;color:var(--purple);margin-top:.2rem">⭐ Mega perks active</div>'}
+    `;
+    el.appendChild(d);
+  });
+  // Partner badge count
+  const partnerCount = INFLUENCER_ROSTER.filter(i=>i.tier!=='free').length;
+  const badge = document.getElementById('inf-partner-badge');
+  if(badge) badge.textContent = partnerCount > 0 ? `${partnerCount} partner${partnerCount>1?'s':''}` : '';
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  PATENTS + ENGINE BUILDING                                  ║
+// ╚══════════════════════════════════════════════════════════════╝
+const ENGINE_PROJECTS = [
+  {id:'clod_engine',    name:'CLOD Engine v1',      ico:'🤖', desc:'Proprietary engine with CLOD integration. Reduces bugs, enables patents.',
+   cost:5000, rpCost:150, reqG:3, buildTime:90, progress:0, built:false, building:false,
+   eff:()=>{ G.bugRate*=0.75; G.lps+=5; },
+   patent:{name:'Contextual AI Compilation',  desc:'Royalty from studios using CLOD-style AI. +$200/s.',  income:200,  duration:300}},
+  {id:'render_engine',  name:'RenderForge',          ico:'🎨', desc:'Custom rendering pipeline. Superior graphics demand + patent income.',
+   cost:15000, rpCost:250, reqG:6, buildTime:120, progress:0, built:false, building:false,
+   eff:()=>{ G.demand.graphics=Math.min(100,G.demand.graphics+30); G.lpc+=5; },
+   patent:{name:'Adaptive Shader Architecture', desc:'Industry license fee. +$500/s.',              income:500,  duration:600}},
+  {id:'netcode_engine', name:'GhostNet',              ico:'🌐', desc:'Low-latency netcode. Multiplayer demand explodes. License it.',
+   cost:25000, rpCost:350, reqG:9, buildTime:150, progress:0, built:false, building:false,
+   eff:()=>{ G.demand.multiplayer=Math.min(100,G.demand.multiplayer+50); },
+   patent:{name:'Ghost Sync Protocol',          desc:'Every online game pays you a cut. +$1,200/s.',  income:1200, duration:900}},
+  {id:'narrative_ai',   name:'NarrativeCore AI',      ico:'📖', desc:'AI-driven story system. Story demand maxed. CLOD helped design it reluctantly.',
+   cost:40000, rpCost:500, reqG:14, buildTime:180, progress:0, built:false, building:false,
+   eff:()=>{ G.demand.story=100; G.lps+=20; },
+   patent:{name:'Dynamic Story Patent',         desc:'Narrative games license your tech. +$2,500/s.', income:2500, duration:1200}},
+  {id:'quantum_core',   name:'Quantum Game Core',     ico:'🔮', desc:'[NG+] Inexplicable performance. Nobody knows. CLOD filed a report about not knowing.',
+   cost:200000, rpCost:1000, reqG:0, buildTime:300, progress:0, built:false, building:false, ng:true,
+   eff:()=>{ G.lps*=3; G.lpc*=2; G.bugRate*=0.3; },
+   patent:{name:'Quantum Execution Method',     desc:'Tech giants pay royalties. +$10,000/s.',        income:10000,duration:3600}},
+];
+
+// Active patents (instances with timers)
+let ACTIVE_PATENTS = []; // {engineId, name, desc, income, remaining, id}
+let nextPatentId = 1;
+
+let activeEngineBuild = null; // id of currently-building engine
+let engineBuildTick = 0;
+
+function startEngineBuild(id){
+  if(activeEngineBuild){ addClodMsg(`Already building ${ENGINE_PROJECTS.find(e=>e.id===activeEngineBuild)?.name}, ${pname()}. One project at a time.`,'warn'); return; }
+  const eng = ENGINE_PROJECTS.find(e=>e.id===id);
+  if(!eng||eng.built){ return; }
+  if(G.cash < eng.cost){ addClodMsg(`Building ${eng.name} costs ${fmtM(eng.cost)}, ${pname()}. Current cash: ${fmtM(G.cash)}.`,'warn'); return; }
+  if(G.researchPoints < eng.rpCost){ addClodMsg(`${eng.name} requires ${eng.rpCost} RP, ${pname()}. Have: ${Math.floor(G.researchPoints)}.`,'warn'); return; }
+  if(eng.ng && NG_RUN===0){ addClodMsg(`Quantum Core requires NG+, ${pname()}.`,'warn'); return; }
+  G.cash -= eng.cost;
+  G.researchPoints -= eng.rpCost;
+  eng.building = true;
+  eng.progress = 0;
+  activeEngineBuild = id;
+  engineBuildTick = 0;
+  addClodMsg(`Building ${eng.name}, ${pname()}. Cost: ${fmtM(eng.cost)} + ${eng.rpCost} RP. Build time: ${eng.buildTime}s. I've prepared a project timeline. It has concerns.`,'ok');
+  showBanner(`⚙️ Building: ${eng.name}...`);
+  renderEngines();
+  updateUI();
+}
+
+function engineBuildLoop(dt){
+  if(!activeEngineBuild) return;
+  const eng = ENGINE_PROJECTS.find(e=>e.id===activeEngineBuild);
+  if(!eng) return;
+  engineBuildTick += dt;
+  eng.progress = Math.min(100, (engineBuildTick / eng.buildTime) * 100);
+  if(engineBuildTick >= eng.buildTime){
+    eng.building = false;
+    eng.built = true;
+    eng.progress = 100;
+    activeEngineBuild = null;
+    engineBuildTick = 0;
+    eng.eff();
+    // Auto-file patent
+    filePatent(eng.id);
+    addClodMsg(`${eng.name} complete, ${pname()}! Engine deployed. Patent filed automatically. I've already found 3 ways to extend it and 2 ways it could go wrong.`,'ok');
+    showBanner(`✅ ${eng.name} built! Patent filed.`);
+    renderEngines();
+    renderPatents();
+  }
+  if(G.tickCount % 10 === 0) renderEngines();
+}
+
+function filePatent(engineId){
+  const eng = ENGINE_PROJECTS.find(e=>e.id===engineId);
+  if(!eng) return;
+  const p = eng.patent;
+  ACTIVE_PATENTS.push({
+    engineId, name:p.name, desc:p.desc,
+    income:p.income, remaining:p.duration,
+    id: nextPatentId++, active:true,
+  });
+  document.getElementById('patent-count').textContent = `${ACTIVE_PATENTS.filter(p=>p.active).length} active`;
+  renderPatents();
+}
+
+function patentTick(dt){
+  let royalties = 0;
+  ACTIVE_PATENTS.forEach(p=>{
+    if(!p.active) return;
+    p.remaining = Math.max(0, p.remaining - dt);
+    royalties += p.income * dt;
+    if(p.remaining <= 0){
+      p.active = false;
+      addClodMsg(`Patent "${p.name}" has expired, ${pname()}. The royalty stream has ended. I've filed this under "Things That Were Good While They Lasted." Consider building the next engine.`,'warn');
+      document.getElementById('patent-count').textContent = `${ACTIVE_PATENTS.filter(x=>x.active).length} active`;
+      renderPatents();
+    }
+  });
+  if(royalties > 0){
+    G.cash += royalties * NG_PERMA_BONUSES.cashMult;
+    G.totalRevenue += royalties * NG_PERMA_BONUSES.cashMult;
+    G.totalCash += royalties * NG_PERMA_BONUSES.cashMult;
+  }
+}
+
+function renderEngines(){
+  const el = document.getElementById('engine-grid');
+  if(!el) return;
+  el.innerHTML='';
+  const ng = NG_RUN > 0;
+  ENGINE_PROJECTS.filter(e=>!e.ng||ng).forEach(e=>{
+    const canBuild = !e.built && !e.building && G.gamesShipped>=e.reqG && G.cash>=e.cost && G.researchPoints>=e.rpCost && !activeEngineBuild && (!e.ng||ng);
+    const isLocked = G.gamesShipped<e.reqG || (e.ng&&!ng);
+    const d=document.createElement('div');
+    d.className='engine-card'+(e.building?' eng-building':e.built?' eng-done':'')+(isLocked?' locked-r':'');
+    d.innerHTML=`
+      <div style="display:flex;align-items:center;gap:.35rem">
+        <span style="font-size:1rem">${e.ico}</span>
+        <div>
+          <div class="engine-name">${e.name}${e.ng?' <span style="font-size:.52rem;color:var(--purple)">[NG+]</span>':''}</div>
+          <div style="font-size:.5rem;color:var(--muted)">${e.built?'✅ Built & deployed':e.building?`Building... ${Math.floor(e.progress)}%`:isLocked?`🔒 Need ${e.reqG} games`:''}</div>
+        </div>
+      </div>
+      <div class="engine-desc">${e.desc}</div>
+      ${e.building?`<div class="engine-prog"><div class="engine-pfill" style="width:${e.progress}%"></div></div>`:''}
+      <div class="engine-meta">
+        <span>${e.built?'Patent: '+e.patent.name:fmtM(e.cost)+' + '+e.rpCost+' RP'}</span>
+        <span style="color:${e.built?'var(--accent2)':'var(--accent)'}">${e.built?'Income: +'+fmtM(e.patent.income)+'/s ('+e.patent.duration+'s)':'Build: '+e.buildTime+'s'}</span>
+      </div>
+    `;
+    if(canBuild) d.onclick=()=>startEngineBuild(e.id);
+    el.appendChild(d);
+  });
+  const badge=document.getElementById('engine-badge');
+  if(badge){
+    const built=ENGINE_PROJECTS.filter(e=>e.built).length;
+    badge.textContent=built>0?`${built} built`:'build proprietary tech';
+  }
+}
+
+function renderPatents(){
+  const el=document.getElementById('patent-grid');
+  if(!el) return;
+  if(ACTIVE_PATENTS.length===0){
+    el.innerHTML='<div style="font-size:.58rem;color:var(--muted);padding:.4rem;width:100%;text-align:center">Complete engine projects to file patents.</div>';
+    return;
+  }
+  el.innerHTML='';
+  ACTIVE_PATENTS.forEach(p=>{
+    const pct = p.active ? Math.min(100,(p.remaining/ENGINE_PROJECTS.find(e=>e.engineId===p.engineId||e.id===p.engineId)?.patent?.duration||p.remaining)*100) : 0;
+    const d=document.createElement('div');
+    d.className='patent-card'+(p.active?' active-patent':' expired');
+    d.innerHTML=`
+      <div class="patent-name">${p.active?'📜':'🗃️'} ${p.name}</div>
+      <div class="patent-desc">${p.desc}</div>
+      ${p.active?`
+        <div class="patent-income">+${fmtM(p.income)}/s royalties</div>
+        <div style="height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-top:.25rem">
+          <div style="height:100%;background:var(--accent2);border-radius:2px;width:${pct}%;transition:width .5s"></div>
+        </div>
+        <div style="font-size:.5rem;color:var(--muted);margin-top:2px">${Math.ceil(p.remaining)}s remaining</div>
+      `:'<div style="font-size:.52rem;color:var(--muted);margin-top:.2rem">Expired — build next engine</div>'}
+    `;
+    el.appendChild(d);
+  });
+}
 function gameTick(){
   const now=Date.now();const dt=Math.min((now-lastTick)/1000,.1);lastTick=now;
   G.tickCount++;
@@ -1900,6 +3817,14 @@ function gameTick(){
     if(G.autoBugFixAcc>=1){const f=Math.floor(G.autoBugFixAcc);G.bugs=Math.max(0,G.bugs-f);G.bugsFixed+=f;G.autoBugFixAcc-=f;}
   }
   salesTick(dt);hypeTick(dt);rndTick(dt);workerTick(dt);aiWarUpdate(dt);crisisTick(dt);
+  qualityTick(dt);moraleTick(dt);moodTick(dt);
+  journalistTick(dt);cmTick(dt);competitorsTick(dt);steamSaleTick(dt);
+  influencerTick(dt);engineBuildLoop(dt);patentTick(dt);
+  autoSaveTick(dt);
+  if(G.tickCount%8===0){ updateQualityUI(); updateDebtPaydownBtn(); }
+  if(G.tickCount%30===0){ updateMetascore(); }
+  if(G.tickCount%45===0){ renderRegionalSales(); }
+  if(G.tickCount%60===0){ renderPortfolio(); }
   checkMilestones();
   if(G.tickCount%4===0)updateUI();
   if(G.tickCount%30===0)renderCampaigns();
