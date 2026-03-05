@@ -13,12 +13,10 @@ This document lists improvement suggestions and risk areas for next iterations.
 - Main risk profile is runtime stability and maintainability due large single-file global-state architecture.
 
 ## P0 (Stability / Correctness)
-1. Initialize `lastTick` before first `gameTick` call.
-   - `gameTick()` references `lastTick` but no declaration is present in the current file.
-   - Expected fix: `let lastTick = Date.now();` near other loop globals.
-2. Prevent multiple game loops from starting.
-   - `bootIntoGame()` always calls `requestAnimationFrame(gameTick)` with no guard.
-   - If called twice, updates and timers will run multiple times.
+1. Done (2026-03-05): Initialize `lastTick` before first `gameTick` call.
+   - Implemented `let lastTick = Date.now();` in loop globals.
+2. Done (2026-03-05): Prevent multiple game loops from starting.
+   - Added `gameLoopStarted` guard in `bootIntoGame()`, `startGame()`, and `loadAndContinue()`.
 3. Harden CLOD chat network behavior.
    - `askClod()` calls Anthropic directly from browser without API key flow.
    - Add local fallback response path and optional key storage command, or proxy through backend.

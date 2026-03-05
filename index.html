@@ -1623,6 +1623,8 @@ const NG_BONUSES = [
 let codeLineN=3;
 let chartHistory=new Array(60).fill(0);
 let aiWarTick=0;
+let lastTick=Date.now();
+let gameLoopStarted=false;
 
 function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
 function fmt(n){if(n>=1e9)return(n/1e9).toFixed(1)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return Math.floor(n).toString();}
@@ -1831,6 +1833,7 @@ function loadGame(data){
 }
 
 function loadAndContinue(){
+  if(gameLoopStarted)return;
   try {
     const raw = localStorage.getItem(SAVE_KEY);
     if(!raw) return;
@@ -1853,6 +1856,7 @@ function deleteSave(){
 
 // Common boot logic — called by both startGame (new) and loadAndContinue
 function bootIntoGame(isLoad=false){
+  if(gameLoopStarted)return;
   document.getElementById('name-screen').style.display='none';
   document.getElementById('h-name').textContent=PLAYER_NAME;
 
@@ -1895,6 +1899,8 @@ function bootIntoGame(isLoad=false){
     setTimeout(()=>addClodMsg(`Quick tip, ${PLAYER_NAME}: Sales tab is where you watch your game live or die in real time. I find it harrowing. That is appropriate.`,'think'), 18000);
   }
 
+  gameLoopStarted=true;
+  lastTick=Date.now();
   requestAnimationFrame(gameTick);
 }
 
@@ -1933,6 +1939,7 @@ document.addEventListener('keydown', e=>{
 });
 
 function startGame(){
+  if(gameLoopStarted)return;
   const inp=document.getElementById('name-inp');
   const raw=inp.value.trim();
   PLAYER_NAME=raw||'dev';
