@@ -17,11 +17,14 @@ This document lists improvement suggestions and risk areas for next iterations.
    - Implemented `let lastTick = Date.now();` in loop globals.
 2. Done (2026-03-05): Prevent multiple game loops from starting.
    - Added `gameLoopStarted` guard in `bootIntoGame()`, `startGame()`, and `loadAndContinue()`.
-3. Harden CLOD chat network behavior.
-   - `askClod()` calls Anthropic directly from browser without API key flow.
-   - Add local fallback response path and optional key storage command, or proxy through backend.
-4. Escape user chat input before injecting into `.innerHTML`.
-   - `ud.innerHTML` currently interpolates raw user content (`q`) and allows XSS payloads.
+3. Done (2026-03-05): Harden CLOD chat network behavior.
+   - Added API key flow via chat commands:
+     - `/key <anthropic_key>` stores key in `localStorage`
+     - `/key clear` removes key
+   - Chat now falls back to a local in-character responder when API call fails/unavailable.
+   - `askClod()` now handles non-OK responses gracefully instead of hard network failure messaging.
+4. Done (2026-03-05): Escape user chat input before injecting into `.innerHTML`.
+   - Added `escHtml()` and applied it to user chat echo rendering.
 5. Fix silent autosave behavior.
    - `saveGame(silent=false)` accepts `silent` but does not use it.
    - Autosave currently updates UI every interval even when intended silent.

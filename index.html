@@ -2527,38 +2527,109 @@ function triggerEndgame(){
 // ╔══════════════════════════════════════════════════════════════╗
 // ║  CLOD API                                                    ║
 // ╚══════════════════════════════════════════════════════════════╝
+function escHtml(str){
+  return String(str).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+function localClodReply(q){
+  const t=q.toLowerCase();
+  const moodState=getClodMoodState();
+  const focus=t.includes('bug')?'bugs':
+    (t.includes('cash')||t.includes('money')||t.includes('revenue'))?'money':
+    (t.includes('hire')||t.includes('team')||t.includes('worker'))?'team':
+    (t.includes('ship')||t.includes('launch')||t.includes('release'))?'shipping':
+    (t.includes('research')||t.includes('upgrade')||t.includes('rp'))?'research':'architecture';
+  const reportId=100+Math.floor(Math.random()*900);
+  const lineA=`Incident Report #${reportId}: ${PLAYER_NAME}, current status is Era ${G.era}, ${G.gamesShipped} shipped games, ${G.bugs} active bugs, ${fmtM(G.cash)} cash, and ${Math.floor(G.techDebt)}% tech debt.`;
+  const lineB={
+    bugs:'Bug policy: pause feature greed, fix the red items first, and stop negotiating with stack traces.',
+    money:'Cash policy: prioritize compounding upgrades, reduce wasteful hires, and ship on a predictable cadence.',
+    team:'Team policy: avoid feud stacks, keep morale above 30%, and stop hiring chaos in bulk.',
+    shipping:'Release policy: ship smaller, faster, and let quality compound instead of waiting for mythical perfection.',
+    research:'R&D policy: buy multipliers first, unlock bottlenecks second, vanity tech last.',
+    architecture:'Architecture policy: reduce accidental complexity, automate toil, and name variables like adults.'
+  }[focus];
+  const lineC=`Mood update: ${moodState.label}. Folder "Run-${NG_RUN}-Era-${G.era}" has been updated with your question and my concern.`;
+  return `${lineA} ${lineB} ${lineC}`;
+}
+
 async function askClod(){
   const inp=document.getElementById('clod-inp');
   const q=inp.value.trim();if(!q)return;
   const feed=document.getElementById('clod-feed');
   const ud=document.createElement('div');ud.className='cmsg you';
-  ud.innerHTML=`<div class="mtag you">YOU</div>${q}`;
+  ud.innerHTML=`<div class="mtag you">YOU</div>${escHtml(q)}`;
   feed.appendChild(ud);feed.scrollTop=feed.scrollHeight;
   inp.value='';inp.disabled=true;
+
+  if(/^\/key\s+clear$/i.test(q)){
+    localStorage.removeItem('clod_api_key');
+    addClodMsg(`API key removed, ${PLAYER_NAME}. Local CLOD mode is active.`,'ok');
+    document.getElementById('clod-status').textContent='ready';
+    inp.disabled=false;inp.focus();
+    return;
+  }
+  const keyMatch=q.match(/^\/key\s+(.+)$/i);
+  if(keyMatch){
+    localStorage.setItem('clod_api_key',keyMatch[1].trim());
+    addClodMsg(`API key stored in this browser, ${PLAYER_NAME}. Cloud replies will be attempted on next prompt.`,'ok');
+    document.getElementById('clod-status').textContent='ready';
+    inp.disabled=false;inp.focus();
+    return;
+  }
+
   document.getElementById('clod-status').textContent='thinking...';
   const td=document.createElement('div');td.className='cmsg think';td.id='clod-typing';
-  td.innerHTML=`<div class="mtag">CLOD</div><span id="typing-dots">▋</span>`;
+  td.innerHTML=`<div class="mtag">CLOD</div><span id="typing-dots">...</span>`;
   feed.appendChild(td);feed.scrollTop=feed.scrollHeight;
-  const iv=setInterval(()=>{const d=document.getElementById('typing-dots');if(d)d.textContent=d.textContent.length<5?d.textContent+'▋':'▋';},300);
+  const iv=setInterval(()=>{
+    const d=document.getElementById('typing-dots');
+    if(d)d.textContent=d.textContent.length<5?d.textContent+'.':'.';
+  },300);
   const persona=NATIONALITY_PERSONAS[PLAYER_NATIONALITY]||NATIONALITY_PERSONAS.default;
   const moodCtx = getMoodContext();
   const ctx=`The user's name is ${PLAYER_NAME}. Studio context: ${G.gamesShipped} games shipped, Era ${G.era}, ${G.workers.length} team members, ${G.bugs} active bugs, ${fmtM(G.cash)} cash, ${Math.floor(G.hype)} hype, ${fmt(G.totalLines)} total lines written. NG+ run: ${NG_RUN}. Code quality: ${Math.floor(G.codeQuality)}%. Tech debt: ${Math.floor(G.techDebt)}%. Genre: ${G.selectedGenre}. ${moodCtx}`;
   const sysPrompt=`You are CLOD (Contextual Logic & Obfuscation Daemon). ${persona.style} ${persona.quirk} Always address the user as ${PLAYER_NAME}. Keep responses to 2-4 dense sentences — you're a chat widget. Reference your "Incident Reports" and "folders" on the user. Be genuinely funny and in-character. ${ctx}`;
+
+  const apiKey=(localStorage.getItem('clod_api_key')||'').trim();
+  let text='';
+  let usedFallback=false;
   try{
-    const resp=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sysPrompt,messages:[{role:"user",content:q}]})
-    });
-    const data=await resp.json();
-    const text=data.content?.map(b=>b.text||'').join('')||`I tried to respond, ${PLAYER_NAME}. Something went wrong. I've filed Incident Report #404.`;
-    clearInterval(iv);document.getElementById('clod-typing')?.remove();
-    addClodMsg(text);document.getElementById('clod-status').textContent='ready';
-  }catch(err){
-    clearInterval(iv);document.getElementById('clod-typing')?.remove();
-    addClodMsg(`Network error, ${PLAYER_NAME}. Post-mortem: not my fault, but I accept partial responsibility.`,'err');
-    document.getElementById('clod-status').textContent='error';
-    setTimeout(()=>document.getElementById('clod-status').textContent='ready',2000);
+    if(apiKey){
+      const resp=await fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "x-api-key":apiKey,
+          "anthropic-version":"2023-06-01",
+          "anthropic-dangerous-direct-browser-access":"true"
+        },
+        body:JSON.stringify({
+          model:"claude-sonnet-4-20250514",
+          max_tokens:280,
+          system:sysPrompt,
+          messages:[{role:"user",content:q}]
+        })
+      });
+      if(resp.ok){
+        const data=await resp.json();
+        text=(Array.isArray(data.content)?data.content:[])
+          .map(b=>typeof b?.text==='string'?b.text.trim():'')
+          .filter(Boolean)
+          .join('\n')
+          .trim();
+      }
+    }
+  }catch(_err){}
+
+  if(!text){
+    text=localClodReply(q);
+    usedFallback=true;
   }
+
+  clearInterval(iv);document.getElementById('clod-typing')?.remove();
+  addClodMsg(text,usedFallback?'warn':'');
+  document.getElementById('clod-status').textContent='ready';
   inp.disabled=false;inp.focus();
 }
 
