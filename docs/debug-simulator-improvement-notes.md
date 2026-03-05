@@ -23,11 +23,12 @@ This document lists improvement suggestions and risk areas for next iterations.
      - `/key clear` removes key
    - Chat now falls back to a local in-character responder when API call fails/unavailable.
    - `askClod()` now handles non-OK responses gracefully instead of hard network failure messaging.
-4. Done (2026-03-05): Escape user chat input before injecting into `.innerHTML`.
+4. Done (2026-03-05): Escape chat content before injecting into `.innerHTML`.
    - Added `escHtml()` and applied it to user chat echo rendering.
-5. Fix silent autosave behavior.
-   - `saveGame(silent=false)` accepts `silent` but does not use it.
-   - Autosave currently updates UI every interval even when intended silent.
+   - `addClodMsg()` now escapes CLOD/model text and preserves newlines via `<br>`.
+5. Done (2026-03-05): Fix silent autosave behavior.
+   - `saveGame(silent=false)` now honors `silent`.
+   - Autosave no longer updates/flashes save UI every cycle.
 
 ## P1 (Maintainability / Architecture)
 1. Split `index.html` script into modules:

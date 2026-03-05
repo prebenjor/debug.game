@@ -1644,7 +1644,8 @@ function addCodeLine(){
 function addClodMsg(text,type=''){
   const f=document.getElementById('clod-feed');
   const d=document.createElement('div');d.className=`cmsg ${type}`;
-  d.innerHTML=`<div class="mtag${type==='ng'?' ng':''}">CLOD</div>${text}`;
+  const safeText=escHtml(String(text??'')).replace(/\n/g,'<br>');
+  d.innerHTML=`<div class="mtag${type==='ng'?' ng':''}">CLOD</div>${safeText}`;
   f.appendChild(d);
   if(f.children.length>60)f.removeChild(f.children[0]);
   f.scrollTop=f.scrollHeight;
@@ -1716,14 +1717,16 @@ function saveGame(silent=false){
   try {
     const payload = getSavePayload();
     localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
-    const now = new Date();
-    const timeStr = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')+':'+now.getSeconds().toString().padStart(2,'0');
-    const el = document.getElementById('h-save');
-    if(el){
-      el.textContent = timeStr;
-      el.style.color = 'var(--accent2)';
-      clearTimeout(saveFlashTimer);
-      saveFlashTimer = setTimeout(()=>{ if(el) el.style.color='var(--muted)'; }, 1500);
+    if(!silent){
+      const now = new Date();
+      const timeStr = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')+':'+now.getSeconds().toString().padStart(2,'0');
+      const el = document.getElementById('h-save');
+      if(el){
+        el.textContent = timeStr;
+        el.style.color = 'var(--accent2)';
+        clearTimeout(saveFlashTimer);
+        saveFlashTimer = setTimeout(()=>{ if(el) el.style.color='var(--muted)'; }, 1500);
+      }
     }
   } catch(e) {
     console.warn('Save failed:', e);
